@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUCKY LOTTERY — Triple Digit Results</title>
+<style>
+:root{--bg:#170909;--panel:#321313;--panel2:#4a1a18;--gold:#ffe34d;--pink:#ff3434;--cyan:#ffc928;--muted:#e6c5a0}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#fff;background:radial-gradient(circle at 12% 8%,#8b1717 0,transparent 28%),radial-gradient(circle at 88% 22%,#8b5a08 0,transparent 25%),linear-gradient(135deg,#160707,#351010 48%,#120808);min-height:100vh;position:relative;overflow-x:hidden}
+body:before{content:"$     ₹       $       ₹       $";position:fixed;inset:0;pointer-events:none;z-index:-1;color:#ffe34d;opacity:.075;font-size:clamp(35px,7vw,76px);font-weight:1000;letter-spacing:22px;line-height:2.2;overflow:hidden;transform:rotate(-18deg) scale(1.25);white-space:pre-wrap;text-shadow:0 0 18px #ffbd32} header{padding:22px 16px 18px;text-align:center;border-bottom:1px solid #ffd84d55;background:linear-gradient(120deg,#570e0eec,#241006ed)}
+.brand{font-weight:1000;letter-spacing:2px;font-size:clamp(25px,6vw,40px);color:#ffe34d;text-shadow:0 3px 0 #a51d12,0 0 24px #ffb52d}
+.sub{color:#d8c9f5;font-size:12px;letter-spacing:2px;margin-top:5px}
+.wrap{max-width:900px;margin:0 auto;padding:18px 14px 40px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}
+.pill{background:#ffffff12;border:1px solid #ffffff25;border-radius:99px;padding:8px 12px;color:#e7dcff;font-size:12px}
+button{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
+.adminBtn{background:linear-gradient(135deg,#fff06a,#ffb400 55%,#ed3b24);color:#351006}
+.hero{background:linear-gradient(145deg,#8d2020,#49100f 55%,#321b08);border:1px solid #ffe34d88;border-radius:24px;padding:22px 14px;text-align:center;box-shadow:0 18px 50px #0005}
+.eyebrow{color:#e8d8ff;font-size:12px;letter-spacing:2px;font-weight:800}
+.balls{display:flex;justify-content:center;gap:10px;margin:18px 0 12px}
+.ball{width:clamp(70px,18vw,100px);height:clamp(70px,18vw,100px);border-radius:50%;display:grid;place-items:center;font-size:clamp(34px,9vw,52px);font-weight:1000;color:white;text-shadow:0 3px 3px #0007;border:4px solid #ffffffcc;box-shadow:inset -9px -11px 16px #0005,inset 7px 8px 12px #ffffff65,0 9px 18px #0007;position:relative}
+.ball:after{content:"";position:absolute;width:24%;height:13%;border-radius:50%;background:#ffffff75;top:13%;left:20%;transform:rotate(-35deg)}
+.ball:nth-child(1){background:radial-gradient(circle at 30% 25%,#ff9fb9,#ed2767 60%,#9e1044)}
+.ball:nth-child(2){background:radial-gradient(circle at 30% 25%,#a6d8ff,#2876e7 60%,#143b99)}
+.ball:nth-child(3){background:radial-gradient(circle at 30% 25%,#fff0a0,#f4a51f 60%,#a9560c)}
+.resultMeta{color:var(--gold);font-weight:800;font-size:13px}.next{color:#d4c9ec;font-size:13px;margin-top:8px}
+.sectionTitle{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}.sectionTitle h2{font-size:18px;margin:0}.sectionTitle small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px}
+.slot{background:linear-gradient(145deg,#5a1919,#301010);border:1px solid #ffcf3f55;border-radius:15px;padding:12px;min-height:100px}
+.slotHead{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800}.status{font-size:10px;color:#b9afd4;background:#ffffff12;padding:4px 7px;border-radius:20px}
+.num{font-size:27px;font-weight:1000;letter-spacing:5px;color:var(--gold);margin-top:10px;text-shadow:0 0 15px #ffc64c55}.pending{font-size:13px;color:#a99fc2;margin-top:12px}
+.slot.published{border-color:#ffe34d;background:linear-gradient(145deg,#783016,#4b1710)}
+.note{text-align:center;color:#a99fc2;font-size:11px;margin:20px 0 0}
+.overlay{display:none;position:fixed;inset:0;background:#070510d9;z-index:5;align-items:center;justify-content:center;padding:14px}.modal{width:min(540px,100%);max-height:90vh;overflow:auto;background:#351313;border:1px solid #ffe34d66;border-radius:20px;padding:18px;box-shadow:0 20px 80px #0009}
+.modal h2{margin:0 0 12px;color:var(--gold)}label{display:block;font-size:12px;color:#d8c9f5;margin:10px 0 5px}input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #ffffff30;background:#1b0909;color:white;font:inherit}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.primary{background:linear-gradient(135deg,#fff06a,#ffb400 55%,#ed3b24);color:#321006}.secondary{background:#ffffff18;color:white}.danger{background:#9c2853;color:white}
+.adminList{margin-top:14px;border-top:1px solid #ffffff20;padding-top:10px}.adminItem{display:grid;grid-template-columns:1fr 100px auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff12;font-size:12px}
+.hidden{display:none!important}
+@media(max-width:430px){.adminItem{grid-template-columns:1fr 82px}.adminItem button{grid-column:1/-1}.row{grid-template-columns:1fr}}
+</style></head>
+<body>
+<header><div class="brand">★ LUCKY LOTTERY ★</div><div class="sub">TRIPLE DIGIT • DAILY RESULT BOARD</div></header>
+<main class="wrap">
+ <div class="top"><span class="pill" id="today"></span><button class="adminBtn" onclick="openAdmin()">⚙ Admin Panel</button></div>
+ <section class="hero">
+  <div class="eyebrow">TODAY'S TRIPLE DIGIT RESULT</div>
+  <div class="balls" id="heroBalls"><div class="ball">—</div><div class="ball">—</div><div class="ball">—</div></div>
+  <div class="resultMeta" id="heroTime">आज का प्रकाशित रिजल्ट</div>
+  <div class="next" id="nextText">अगला रिजल्ट समय पर अपने आप खुलेगा</div>
+ </section>
+ <div class="sectionTitle"><h2>आज के रिजल्ट</h2><small>10:00 AM – 9:00 PM</small></div>
+ <div class="grid" id="slots"></div>
+ <div class="sectionTitle"><h2>पिछले 30 दिन</h2><small>पुराने रिजल्ट</small></div>
+ <div id="history"></div>
+ <p class="note">यह वेबसाइट केवल मनोरंजन (FUN) के लिए है। इसका उपयोग केवल जानकारी और परिणाम देखने के लिए करें। यहाँ कोई दांव, पैसे का लेनदेन या पुरस्कार की सुविधा नहीं है।</p>
+</main>
+<div class="overlay" id="adminOverlay"><div class="modal">
+ <h2>🔐 Admin Panel</h2>
+ <div id="loginArea"><p style="color:#c7bbdf;font-size:13px">डेमो पासवर्ड: <b>1234</b></p><label>Admin Password</label><input id="password" type="password" placeholder="पासवर्ड डालें"><div class="actions"><button class="primary" onclick="login()">Login</button><button class="secondary" onclick="closeAdmin()">बंद करें</button></div></div>
+ <div id="manageArea" class="hidden">
+  <div class="row"><div><label>तारीख</label><input id="date" type="date"></div><div><label>समय</label><select id="time"></select></div></div>
+  <label>Triple Digit Number (000–999)</label><input id="number" inputmode="numeric" maxlength="3" placeholder="जैसे 047">
+  <div class="actions"><button class="primary" onclick="saveResult()">Save & Schedule</button><button class="secondary" onclick="logout()">Logout</button><button class="secondary" onclick="closeAdmin()">बंद करें</button></div>
+  <p style="font-size:11px;color:#b9afd4">नंबर निर्धारित समय पर अपने आप सार्वजनिक होगा। यह डेमो उसी ब्राउज़र में सेव रहता है।</p>
+  <div class="adminList"><b>सेट किए गए नंबर</b><div id="adminItems"></div></div>
+ </div>
+</div></div>
+<script>
+const KEY='luckyLotteryDemoV1';
+const pad=n=>String(n).padStart(2,'0');
+const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const times=[];for(let m=600;m<=1260;m+=30){times.push(`${pad(Math.floor(m/60))}:${pad(m%60)}`)}
+const fmt=t=>{let [h,m]=t.split(':').map(Number);return `${h%12||12}:${pad(m)} ${h<12?'AM':'PM'}`};
+let data=JSON.parse(localStorage.getItem(KEY)||'{}');
+function save(){localStorage.setItem(KEY,JSON.stringify(data))}
+function today(){let d=new Date();document.getElementById('today').textContent=d.toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+function isPublished(item){return new Date(item.date+'T'+item.time+':00')<=new Date()}
+function render(){
+ today();let now=new Date(),tk=dateKey(now),todayItems=times.map(t=>data[tk+'_'+t]).filter(Boolean);
+ let published=todayItems.filter(isPublished).sort((a,b)=>(a.time>b.time?1:-1));
+ let latest=published[published.length-1];
+ let balls=document.getElementById('heroBalls');balls.innerHTML='';
+ (latest?latest.number:'---').split('').forEach((n,i)=>{let b=document.createElement('div');b.className='ball';b.textContent=n;balls.appendChild(b)});
+ document.getElementById('heroTime').textContent=latest?'प्रकाशित समय: '+fmt(latest.time):'अभी कोई रिजल्ट प्रकाशित नहीं हुआ';
+ let next=times.find(t=>!data[tk+'_'+t]||!isPublished(data[tk+'_'+t]));
+ document.getElementById('nextText').textContent=next?'अगला निर्धारित स्लॉट: '+fmt(next):'आज के सभी स्लॉट पूरे हो गए';
+ let html='';times.forEach(t=>{let x=data[tk+'_'+t],pub=x&&isPublished(x);html+=`<div class="slot ${pub?'published':''}"><div class="slotHead"><span>${fmt(t)}</span><span class="status">${pub?'PUBLISHED':'UPCOMING'}</span></div>${pub?`<div class="num">${x.number}</div>`:'<div class="pending">रिजल्ट बाकी</div>'}</div>`});
+ document.getElementById('slots').innerHTML=html;
+ let days=[];for(let i=0;i<30;i++){let d=new Date();d.setDate(d.getDate()-i);let k=dateKey(d);let arr=times.map(t=>data[k+'_'+t]).filter(x=>x&&isPublished(x));if(arr.length)days.push({date:k,items:arr})}
+ document.getElementById('history').innerHTML=days.length?days.map(day=>`<div class="slot" style="margin-bottom:9px"><b>${new Date(day.date+'T12:00:00').toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'})}</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${day.items.map(x=>`<span class="pill">${fmt(x.time)} · <b style="color:#ffd66b">${x.number}</b></span>`).join('')}</div></div>`).join(''):'<div class="slot" style="color:#b9afd4">अभी पिछले दिनों का कोई प्रकाशित रिकॉर्ड नहीं है।</div>';
+}
+function openAdmin(){document.getElementById('adminOverlay').style.display='flex';document.getElementById('password').value='';document.getElementById('loginArea').classList.remove('hidden');document.getElementById('manageArea').classList.add('hidden')}
+function closeAdmin(){document.getElementById('adminOverlay').style.display='none'}
+function login(){if(document.getElementById('password').value==='1234'){document.getElementById('loginArea').classList.add('hidden');document.getElementById('manageArea').classList.remove('hidden');document.getElementById('date').value=dateKey(new Date());renderAdmin()}else alert('गलत पासवर्ड')}
+function logout(){openAdmin()}
+function renderAdmin(){let s=document.getElementById('time');s.innerHTML=times.map(t=>`<option value="${t}">${fmt(t)}</option>`).join('');let date=document.getElementById('date').value;let entries=times.map(t=>data[date+'_'+t]).filter(Boolean);document.getElementById('adminItems').innerHTML=entries.length?entries.map(x=>`<div class="adminItem"><span>${fmt(x.time)} · ${x.date}</span><b style="color:#ffd66b">${x.number}</b><button class="danger" onclick="removeResult('${x.date}','${x.time}')">Delete</button></div>`).join(''):'<p style="color:#b9afd4;font-size:12px">इस तारीख के लिए अभी कोई नंबर सेट नहीं है।</p>'}
+function saveResult(){let date=document.getElementById('date').value,time=document.getElementById('time').value,number=document.getElementById('number').value.trim();if(!date||!/^\d{3}$/.test(number)){alert('तारीख चुनें और 000 से 999 तक तीन अंक डालें।');return}data[date+'_'+time]={date,time,number};save();document.getElementById('number').value='';renderAdmin();render();alert('नंबर सेव हो गया। तय समय पर अपने आप दिखाई देगा।')}
+function removeResult(date,time){delete data[date+'_'+time];save();renderAdmin();render()}
+document.getElementById('date').addEventListener('change',renderAdmin);
+render();setInterval(render,10000);
+</script>
+</body></html>

@@ -36,6 +36,8 @@ button{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:poin
 .adminList{margin-top:14px;border-top:1px solid #ffffff20;padding-top:10px}.adminItem{display:grid;grid-template-columns:1fr 100px auto;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid #ffffff12;font-size:12px}
 .hidden{display:none!important}
 @media(max-width:430px){.adminItem{grid-template-columns:1fr 82px}.adminItem button{grid-column:1/-1}.row{grid-template-columns:1fr}}
+
+.adminBtn{display:none!important}
 </style></head>
 <body>
 <header><div class="brand">★ LUCKY LOTTERY ★</div><div class="sub">TRIPLE DIGIT • DAILY RESULT BOARD</div></header>
@@ -51,7 +53,7 @@ button{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:poin
  <div class="grid" id="slots"></div>
  <div class="sectionTitle"><h2>पिछले 30 दिन</h2><small>पुराने रिजल्ट</small></div>
  <div id="history"></div>
- <p class="note">यह केवल मनोरंजन / परिणाम प्रदर्शित करने वाला बोर्ड है। इसमें दांव, भुगतान या पुरस्कार का लेनदेन नहीं होता।</p>
+ <p class="note">यह वेबसाइट केवल मनोरंजन (FUN) के लिए है। इसका उपयोग केवल जानकारी और परिणाम देखने के लिए करें। यहाँ कोई दांव, पैसे का लेनदेन या पुरस्कार की सुविधा नहीं है।</p>
 </main>
 <div class="overlay" id="adminOverlay"><div class="modal">
  <h2>🔐 Admin Panel</h2>
@@ -98,7 +100,8 @@ function removeResult(date,time){delete data[date+'_'+time];save();renderAdmin()
 document.getElementById('date').addEventListener('change',renderAdmin);
 render();setInterval(render,10000);
 </script>
-<footer style="text-align:center;padding:25px 10px;color:#ddd;font-size:13px">
-  ⚠️ यह वेबसाइट केवल मनोरंजन (Fun Use) के लिए है।
-  इसका किसी भी प्रकार की वास्तविक पैसे की लॉटरी या जुए से संबंध नहीं है।
-</footer></body></html>
+
+<footer style="max-width:900px;margin:28px auto 10px;padding:18px 12px;text-align:center;color:#eee;font-size:14px;line-height:1.6">
+  ⚠️ यह वेबसाइट केवल मनोरंजन (Fun Use) के लिए है। इसका किसी भी प्रकार की वास्तविक पैसे की लॉटरी या जुए से संबंध नहीं है।
+</footer>
+</body></html>

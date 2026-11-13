@@ -1,0 +1,31 @@
+
+name: Lucky Lottery Auto Results
+
+on:
+  schedule:
+    - cron: "0,30 4-15 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auto-result:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Firebase Admin
+        run: pip install firebase-admin
+
+      - name: Generate result
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: python auto_result.py

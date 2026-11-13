@@ -21,21 +21,21 @@ db = firestore.client()
 def main():
     now = datetime.now(IST)
 
-    # Sirf 10 AM se 9 PM tak
-    if not (10 <= now.hour <= 21):
+        # GitHub run thoda jaldi ya late ho sakta hai
+    # Nearest 30-minute slot choose karo
+    minute_of_day = now.hour * 60 + now.minute
+    slot_total = ((minute_of_day + 5) // 30) * 30
+
+    if not (600 <= slot_total <= 1260):
         print("Scheduled time ke bahar.")
         return
 
-    # Har ghante :00 aur :30 slot
-    if now.minute <= 14:
-        minute = 0
-    elif 30 <= now.minute <= 44:
-        minute = 30
-    else:
-        print("Scheduled slot nahi hai.")
-        return
-
-    slot = now.replace(minute=minute, second=0, microsecond=0)
+    slot = now.replace(
+        hour=slot_total // 60,
+        minute=slot_total % 60,
+        second=0,
+        microsecond=0
+    )
 
     # Admin ka AUTO/MANUAL mode
     mode_doc = db.collection("settings").document("automation").get()

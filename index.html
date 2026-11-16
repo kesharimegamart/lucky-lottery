@@ -28,6 +28,18 @@ const fmt=t=>{let [h,m]=t.split(':').map(Number);return `${h%12||12}:${pad(m)} $
 let results=[];
 function today(){let d=new Date();document.getElementById('today').textContent=d.toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
 function render(){today();let now=new Date(),tk=dateKey(now),todayItems=results.filter(x=>x.date===tk&&new Date(x.publishAt.toDate())<=now).sort((a,b)=>a.time.localeCompare(b.time));let latest=todayItems[todayItems.length-1];let balls=document.getElementById('heroBalls');balls.innerHTML='';(latest?latest.number:'---').split('').forEach(n=>{let b=document.createElement('div');b.className='ball';b.textContent=n;balls.appendChild(b)});document.getElementById('heroTime').textContent=latest?'प्रकाशित समय: '+fmt(latest.time):'अभी कोई रिजल्ट प्रकाशित नहीं हुआ';let next=times.find(t=>!todayItems.some(x=>x.time===t));document.getElementById('nextText').textContent=next?'अगला निर्धारित स्लॉट: '+fmt(next):'आज के सभी स्लॉट पूरे हो गए';let html='';times.forEach(t=>{let x=todayItems.find(x=>x.time===t);html+=`<div class="slot ${x?'published':''}"><div class="slotHead"><span>${fmt(t)}</span><span class="status">${x?'PUBLISHED':'UPCOMING'}</span></div>${x?`<div class="num">${x.number}</div>`:'<div class="pending">रिजल्ट बाकी</div>'}</div>`});document.getElementById('slots').innerHTML=html;let days=[];for(let i=0;i<30;i++){let d=new Date();d.setDate(d.getDate()-i);let k=dateKey(d),arr=results.filter(x=>x.date===k&&new Date(x.publishAt.toDate())<=now).sort((a,b)=>a.time.localeCompare(b.time));if(arr.length)days.push({date:k,items:arr})}document.getElementById('history').innerHTML=days.length?days.map(day=>`<div class="slot" style="margin-bottom:9px"><b>${new Date(day.date+'T12:00:00').toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'})}</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${day.items.map(x=>`<span class="pill">${fmt(x.time)} · <b style="color:#ffd66b">${x.number}</b></span>`).join('')}</div></div>`).join(''):'<div class="slot" style="color:#e9d8c5">अभी पिछले दिनों का कोई प्रकाशित रिकॉर्ड नहीं है।</div>'}
-async function loadResults(){try{const q=query(collection(db,'results'),where('publishAt','<=',Timestamp.now()));const snap=await getDocs(q);results=snap.docs.map(d=>({id:d.id,...d.data()}));render()}catch(e){document.getElementById('nextText').textContent='रिजल्ट लोड नहीं हो पाए। Firebase Rules जाँचें।';console.error(e)}}
-await loadResults();setInterval(loadResults,15000);
+async function loadResults(){try{const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);cutoff.setHours(0,0,0,0);const q=query(collection(db,'results'),where('publishAt','>=',Timestamp.fromDate(cutoff)),where('publishAt','<=',Timestamp.now()));const snap=await getDocs(q);results=snap.docs.map(d=>({id:d.id,...d.data()}));render()}catch(e){document.getElementById('nextText').textContent='रिजल्ट लोड नहीं हो पाए। Firebase Rules जाँचें।';console.error(e)}}
+// Refresh at most once every 10 minutes while visible, and when returning to the page.
+// Results already downloaded are re-rendered every 15 seconds without Firestore reads.
+let lastFetch=0, loading=false;
+const originalLoadResults=loadResults;
+async function refreshResults(force=false){
+  if(loading || document.hidden || (!force && Date.now()-lastFetch<600000))return;
+  loading=true;
+  try{await originalLoadResults();lastFetch=Date.now()}finally{loading=false}
+}
+await refreshResults(true);
+setInterval(render,15000);
+setInterval(()=>refreshResults(),60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshResults()});
 </script></body></html>

@@ -26,20 +26,27 @@ const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`
 const times=[];for(let m=600;m<=1260;m+=30)times.push(`${pad(Math.floor(m/60))}:${pad(m%60)}`);
 const fmt=t=>{let [h,m]=t.split(':').map(Number);return `${h%12||12}:${pad(m)} ${h<12?'AM':'PM'}`};
 let results=[];
+const CACHE_KEY='lucky_public_history_v3';
+const DAY=86400000;
+const stamp=x=>x?.publishAt?.toDate?x.publishAt.toDate().getTime():Number(x?.publishMs||0);
+function normalize(d){return {...d,publishAt:{toDate:()=>new Date(Number(d.publishMs))}}}
+function serialize(d){const {publishAt,...rest}=d;return {...rest,publishMs:stamp(d)}}
+function merge(docs){const map=new Map(results.map(x=>[x.id,x]));for(const x of docs)map.set(x.id,x);results=[...map.values()];render()}
 function today(){let d=new Date();document.getElementById('today').textContent=d.toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-function render(){today();let now=new Date(),tk=dateKey(now),todayItems=results.filter(x=>x.date===tk&&new Date(x.publishAt.toDate())<=now).sort((a,b)=>a.time.localeCompare(b.time));let latest=todayItems[todayItems.length-1];let balls=document.getElementById('heroBalls');balls.innerHTML='';(latest?latest.number:'---').split('').forEach(n=>{let b=document.createElement('div');b.className='ball';b.textContent=n;balls.appendChild(b)});document.getElementById('heroTime').textContent=latest?'प्रकाशित समय: '+fmt(latest.time):'अभी कोई रिजल्ट प्रकाशित नहीं हुआ';let next=times.find(t=>!todayItems.some(x=>x.time===t));document.getElementById('nextText').textContent=next?'अगला निर्धारित स्लॉट: '+fmt(next):'आज के सभी स्लॉट पूरे हो गए';let html='';times.forEach(t=>{let x=todayItems.find(x=>x.time===t);html+=`<div class="slot ${x?'published':''}"><div class="slotHead"><span>${fmt(t)}</span><span class="status">${x?'PUBLISHED':'UPCOMING'}</span></div>${x?`<div class="num">${x.number}</div>`:'<div class="pending">रिजल्ट बाकी</div>'}</div>`});document.getElementById('slots').innerHTML=html;let days=[];for(let i=0;i<30;i++){let d=new Date();d.setDate(d.getDate()-i);let k=dateKey(d),arr=results.filter(x=>x.date===k&&new Date(x.publishAt.toDate())<=now).sort((a,b)=>a.time.localeCompare(b.time));if(arr.length)days.push({date:k,items:arr})}document.getElementById('history').innerHTML=days.length?days.map(day=>`<div class="slot" style="margin-bottom:9px"><b>${new Date(day.date+'T12:00:00').toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'})}</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${day.items.map(x=>`<span class="pill">${fmt(x.time)} · <b style="color:#ffd66b">${x.number}</b></span>`).join('')}</div></div>`).join(''):'<div class="slot" style="color:#e9d8c5">अभी पिछले दिनों का कोई प्रकाशित रिकॉर्ड नहीं है।</div>'}
-async function loadResults(){try{const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);cutoff.setHours(0,0,0,0);const q=query(collection(db,'results'),where('publishAt','>=',Timestamp.fromDate(cutoff)),where('publishAt','<=',Timestamp.now()));const snap=await getDocs(q);results=snap.docs.map(d=>({id:d.id,...d.data()}));render()}catch(e){document.getElementById('nextText').textContent='रिजल्ट लोड नहीं हो पाए। Firebase Rules जाँचें।';console.error(e)}}
-// Refresh at most once every 10 minutes while visible, and when returning to the page.
-// Results already downloaded are re-rendered every 15 seconds without Firestore reads.
-let lastFetch=0, loading=false;
-const originalLoadResults=loadResults;
-async function refreshResults(force=false){
-  if(loading || document.hidden || (!force && Date.now()-lastFetch<600000))return;
-  loading=true;
-  try{await originalLoadResults();lastFetch=Date.now()}finally{loading=false}
-}
-await refreshResults(true);
-setInterval(render,15000);
-setInterval(()=>refreshResults(),60000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshResults()});
+function render(){today();let now=new Date(),tk=dateKey(now),todayItems=results.filter(x=>x.date===tk&&stamp(x)<=now.getTime()).sort((a,b)=>a.time.localeCompare(b.time));let latest=todayItems[todayItems.length-1];let balls=document.getElementById('heroBalls');balls.innerHTML='';(latest?latest.number:'---').split('').forEach(n=>{let b=document.createElement('div');b.className='ball';b.textContent=n;balls.appendChild(b)});document.getElementById('heroTime').textContent=latest?'प्रकाशित समय: '+fmt(latest.time):'अभी कोई रिजल्ट प्रकाशित नहीं हुआ';let next=times.find(t=>!todayItems.some(x=>x.time===t));document.getElementById('nextText').textContent=next?'अगला निर्धारित स्लॉट: '+fmt(next):'आज के सभी स्लॉट पूरे हो गए';let html='';times.forEach(t=>{let x=todayItems.find(x=>x.time===t);html+=`<div class="slot ${x?'published':''}"><div class="slotHead"><span>${fmt(t)}</span><span class="status">${x?'PUBLISHED':'UPCOMING'}</span></div>${x?`<div class="num">${x.number}</div>`:'<div class="pending">रिजल्ट बाकी</div>'}</div>`});document.getElementById('slots').innerHTML=html;let days=[];for(let i=0;i<30;i++){let d=new Date();d.setDate(d.getDate()-i);let k=dateKey(d),arr=results.filter(x=>x.date===k&&stamp(x)<=now.getTime()).sort((a,b)=>a.time.localeCompare(b.time));if(arr.length)days.push({date:k,items:arr})}document.getElementById('history').innerHTML=days.length?days.map(day=>`<div class="slot" style="margin-bottom:9px"><b>${new Date(day.date+'T12:00:00').toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'})}</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${day.items.map(x=>`<span class="pill">${fmt(x.time)} · <b style="color:#ffd66b">${x.number}</b></span>`).join('')}</div></div>`).join(''):'<div class="slot" style="color:#e9d8c5">अभी पिछले दिनों का कोई प्रकाशित रिकॉर्ड नहीं है।</div>'}
+// Historical data is downloaded at most once per browser/day and reused locally.
+function saveCache(){try{localStorage.setItem(CACHE_KEY,JSON.stringify({day:dateKey(new Date()),items:results.filter(x=>x.date!==dateKey(new Date())).map(serialize)}))}catch(e){console.warn('Cache unavailable',e)}}
+try{const cache=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(cache?.day===dateKey(new Date())&&Array.isArray(cache.items)){results=cache.items.map(normalize)}}catch(e){console.warn('History cache unavailable',e)}
+render();
+async function loadHistoryOnce(){try{const now=new Date(),start=new Date(now.getFullYear(),now.getMonth(),now.getDate()-29);const q=query(collection(db,'results'),where('publishAt','>=',Timestamp.fromDate(start)),where('publishAt','<=',Timestamp.now()));const snap=await getDocs(q);merge(snap.docs.map(d=>normalize({id:d.id,...d.data(),publishMs:d.data().publishAt.toMillis()})));saveCache()}catch(e){console.warn('History loading failed; saved cache retained',e)}}
+// Fetch only newly published results, not all 30 days on each refresh.
+let lastCheck=new Date(new Date().setHours(0,0,0,0)).getTime()-1;
+let busy=false;
+async function checkNew(){if(busy||document.hidden)return;busy=true;const end=Date.now();try{const q=query(collection(db,'results'),where('publishAt','>',Timestamp.fromMillis(lastCheck)),where('publishAt','<=',Timestamp.fromMillis(end)));const snap=await getDocs(q);merge(snap.docs.map(d=>normalize({id:d.id,...d.data(),publishMs:d.data().publishAt.toMillis()})));lastCheck=end}catch(e){console.warn('New result check failed',e)}finally{busy=false}}
+// Near scheduled slots check every 30 seconds; otherwise avoid repeated reads.
+function shouldCheck(){const now=new Date(),minutes=now.getHours()*60+now.getMinutes();if(minutes<600||minutes>1270)return false;const closest=times.some(t=>{const [h,m]=t.split(':').map(Number);const delta=minutes-(h*60+m);return delta>=0&&delta<4});return closest||Date.now()-lastCheck>=5*60000}
+if(!results.length)loadHistoryOnce();
+checkNew();
+setInterval(()=>{render();if(shouldCheck())checkNew()},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastCheck>60000)checkNew()});
 </script></body></html>

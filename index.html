@@ -43,12 +43,28 @@
 body{isolation:isolate}body:before{z-index:-1}header,main{position:relative;z-index:1}
 @media(max-width:600px){.lucky-bg-ball{opacity:.53}}
 @media(prefers-reduced-motion:reduce){.lucky-bg-ball{animation:none;opacity:.18}}
+
+/* Professional layout refinements; no database changes */
+header{background:linear-gradient(120deg,#200c12f5,#42171af5 60%,#26190bf5);box-shadow:0 6px 25px #0007;padding:19px 14px}
+.brand{text-shadow:0 2px 13px #ffcc5455;letter-spacing:1.2px}
+.pro-meta{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:#f8e6c1}
+.pro-meta span{border:1px solid #e8bf6266;background:#180d0dbb;border-radius:20px;padding:5px 10px}
+.pro-dot{display:inline-block;width:7px;height:7px;background:#3cdb88;border-radius:50%;box-shadow:0 0 8px #3cdb88;margin-right:5px}
+.slot{box-shadow:0 5px 16px #0004;backdrop-filter:blur(3px)}
+.slot.published{background:linear-gradient(140deg,#59301b,#32130f);border-color:#eac26299}
+.slot.published .status{color:#ffe59c;background:#5a3e174d;border:1px solid #e9c26288}
+.slot:not(.published){background:linear-gradient(145deg,#302025,#21181d);border-color:#a38c9355}
+.slot:not(.published) .status{color:#bdb3c0;background:#ffffff0d}
+.history-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:#281415e8;border:1px solid #e8bd6266;border-radius:13px;padding:11px;margin-bottom:12px}
+.history-tools label{margin:0;font-size:13px;font-weight:800;color:#ffe5aa}
+.history-tools select{flex:1;min-width:140px;width:auto;font-size:13px;padding:10px;border-color:#d8ad6488}
+.history-tools button{padding:10px;background:#624520;color:#fff0c5;border:1px solid #e8bd6266}
 </style></head>
-<body><div class="lucky-bg-balls" aria-hidden="true"><span class="lucky-bg-ball" style="--x:5%;--y:13%;--size:66px;--light:#ff9cc6;--dark:#b80f50;--dur:7.4s;--delay:-2s">4</span><span class="lucky-bg-ball" style="--x:79%;--y:19%;--size:58px;--light:#9cddff;--dark:#1354b4;--dur:8.7s;--delay:-5s">7</span><span class="lucky-bg-ball" style="--x:12%;--y:38%;--size:53px;--light:#f8e588;--dark:#d87b09;--dur:9.2s;--delay:-3s">2</span><span class="lucky-bg-ball" style="--x:83%;--y:47%;--size:70px;--light:#b9f4ab;--dark:#267d36;--dur:7.8s;--delay:-6s">9</span><span class="lucky-bg-ball" style="--x:4%;--y:66%;--size:60px;--light:#d5aaff;--dark:#7137ba;--dur:10s;--delay:-4s">5</span><span class="lucky-bg-ball" style="--x:77%;--y:78%;--size:56px;--light:#ffb5a5;--dark:#d23824;--dur:8.1s;--delay:-1s">1</span><span class="lucky-bg-ball" style="--x:32%;--y:90%;--size:48px;--light:#a5f5f0;--dark:#087e86;--dur:9.6s;--delay:-7s">8</span><span class="lucky-bg-ball" style="--x:63%;--y:7%;--size:43px;--light:#ffe1a6;--dark:#a86b0a;--dur:10.4s;--delay:-3s">3</span></div><header><div class="brand">★ LUCKY LOTTERY ★</div><div class="sub">TRIPLE DIGIT • DAILY RESULT BOARD</div></header>
+<body><div class="lucky-bg-balls" aria-hidden="true"><span class="lucky-bg-ball" style="--x:5%;--y:13%;--size:66px;--light:#ff9cc6;--dark:#b80f50;--dur:7.4s;--delay:-2s">4</span><span class="lucky-bg-ball" style="--x:79%;--y:19%;--size:58px;--light:#9cddff;--dark:#1354b4;--dur:8.7s;--delay:-5s">7</span><span class="lucky-bg-ball" style="--x:12%;--y:38%;--size:53px;--light:#f8e588;--dark:#d87b09;--dur:9.2s;--delay:-3s">2</span><span class="lucky-bg-ball" style="--x:83%;--y:47%;--size:70px;--light:#b9f4ab;--dark:#267d36;--dur:7.8s;--delay:-6s">9</span><span class="lucky-bg-ball" style="--x:4%;--y:66%;--size:60px;--light:#d5aaff;--dark:#7137ba;--dur:10s;--delay:-4s">5</span><span class="lucky-bg-ball" style="--x:77%;--y:78%;--size:56px;--light:#ffb5a5;--dark:#d23824;--dur:8.1s;--delay:-1s">1</span><span class="lucky-bg-ball" style="--x:32%;--y:90%;--size:48px;--light:#a5f5f0;--dark:#087e86;--dur:9.6s;--delay:-7s">8</span><span class="lucky-bg-ball" style="--x:63%;--y:7%;--size:43px;--light:#ffe1a6;--dark:#a86b0a;--dur:10.4s;--delay:-3s">3</span></div><header><div class="brand">★ LUCKY LOTTERY ★</div><div class="sub">TRIPLE DIGIT • DAILY RESULT BOARD</div><div class="pro-meta"><span><i class="pro-dot"></i>RESULT BOARD ACTIVE</span><span id="proHeaderDate">आज के परिणाम</span><span>10:00 AM – 9:00 PM IST</span></div></header>
 <main class="wrap"><div class="result-ticker"><span class="ticker-label">📢 LIVE RESULTS</span><div class="ticker-window"><span class="ticker-content" id="resultTicker">आज के रिजल्ट लोड हो रहे हैं…</span></div></div><section class="countdown" aria-live="off"><div class="countdown-label">⏳ अगला रिजल्ट आने में</div><div class="countdown-clock" id="countdownClock">--:--</div><div class="countdown-slot" id="countdownSlot">समय देखा जा रहा है…</div></section><div class="top"><span class="pill" id="today">रिजल्ट लोड हो रहे हैं…</span></div><div class="share-row"><a class="whatsapp-share" id="whatsappShare" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div>
 <section class="hero"><div class="eyebrow">TODAY'S TRIPLE DIGIT RESULT</div><div class="balls" id="heroBalls"><div class="ball">—</div><div class="ball">—</div><div class="ball">—</div></div><div class="resultMeta" id="heroTime">आज का प्रकाशित रिजल्ट</div><div class="next" id="nextText">रिजल्ट लोड हो रहे हैं…</div></section>
 <div class="sectionTitle"><h2>आज के रिजल्ट</h2><small>10:00 AM – 9:00 PM</small></div><div class="grid" id="slots"></div>
-<div class="sectionTitle"><h2>पिछले 30 दिन</h2><small>पुराने प्रकाशित रिजल्ट</small></div><div id="history"></div>
+<div class="sectionTitle"><h2>पिछले 30 दिन</h2><small>पुराने प्रकाशित रिजल्ट</small></div><div class="history-tools"><label for="historyDateFilter">📅 तारीख चुनें</label><select id="historyDateFilter" aria-label="पुराने रिजल्ट की तारीख"><option value="all">सभी उपलब्ध तारीखें</option></select><button type="button" id="historyReset">सभी</button></div><div id="history"></div>
 <p class="note">⚠️ यह वेबसाइट केवल मनोरंजन (Fun Use) के लिए है। इसका किसी भी प्रकार की वास्तविक पैसे की लॉटरी या जुए से संबंध नहीं है। यहाँ कोई दांव, पैसे का लेनदेन या पुरस्कार की सुविधा नहीं है।</p></main>
 <div id="drawOverlay" role="status" aria-live="off" aria-label="अगला रिजल्ट आने वाला है"><div class="drawBrand">★ LUCKY LOTTERY ★</div><div class="drawLabel">⏳ अगला रिजल्ट आने में</div><div class="drawDigit" id="drawDigit">10</div><div class="drawNote">सेकंड • मनोरंजन के लिए</div></div>
 <script type="module">
@@ -77,7 +93,7 @@ function serialize(d){const {publishAt,...rest}=d;return {...rest,publishMs:stam
 function merge(docs){const map=new Map(results.map(x=>[x.id,x]));for(const x of docs)map.set(x.id,x);results=[...map.values()];render()}
 function today(){let d=new Date();document.getElementById('today').textContent=d.toLocaleDateString('hi-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
 function updateCountdown(){const now=new Date();const minutes=now.getHours()*60+now.getMinutes();const nextMinute=times.map(t=>{const [h,m]=t.split(':').map(Number);return h*60+m}).find(m=>m*60000>minutes*60000+now.getSeconds()*1000+now.getMilliseconds());const clock=document.getElementById('countdownClock'),slot=document.getElementById('countdownSlot');if(nextMinute===undefined){clock.textContent='--:--';slot.textContent='आज के रिजल्ट का समय पूरा हुआ • कल सुबह 10:00 AM से';return}const target=new Date(now);target.setHours(Math.floor(nextMinute/60),nextMinute%60,0,0);const remaining=Math.max(0,Math.ceil((target-now)/1000));clock.textContent=`${pad(Math.floor(remaining/60))}:${pad(remaining%60)}`;slot.textContent=`अगला निर्धारित स्लॉट: ${fmt(times.find(t=>{const [h,m]=t.split(':').map(Number);return h*60+m===nextMinute}))}`}
-function render(){today();let now=new Date(),tk=dateKey(now),todayItems=results.filter(x=>x.date===tk&&stamp(x)<=now.getTime()).sort((a,b)=>a.time.localeCompare(b.time));let latest=todayItems[todayItems.length-1];let balls=document.getElementById('heroBalls');balls.innerHTML='';(latest?latest.number:'---').split('').forEach(n=>{let b=document.createElement('div');b.className='ball';b.textContent=n;balls.appendChild(b)});document.getElementById('heroTime').textContent=latest?'प्रकाशित समय: '+fmt(latest.time):'अभी कोई रिजल्ट प्रकाशित नहीं हुआ';let next=times.find(t=>!todayItems.some(x=>x.time===t));document.getElementById('nextText').textContent=next?'अगला निर्धारित स्लॉट: '+fmt(next):'आज के सभी स्लॉट पूरे हो गए';let html='';times.forEach(t=>{let x=todayItems.find(x=>x.time===t);html+=`<div class="slot ${x?'published':''}"><div class="slotHead"><span>${fmt(t)}</span><span class="status">${x?'PUBLISHED':'UPCOMING'}</span></div>${x?`<div class="num">${x.number}</div>`:'<div class="pending">रिजल्ट बाकी</div>'}</div>`});document.getElementById('slots').innerHTML=html;let days=[];for(let i=0;i<30;i++){let d=new Date();d.setDate(d.getDate()-i);let k=dateKey(d),arr=results.filter(x=>x.date===k&&stamp(x)<=now.getTime()).sort((a,b)=>a.time.localeCompare(b.time));if(arr.length)days.push({date:k,items:arr})}document.getElementById('history').innerHTML=days.length?days.map(day=>`<div class="slot" style="margin-bottom:9px"><b>${new Date(day.date+'T12:00:00').toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'})}</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${day.items.map(x=>`<span class="pill">${fmt(x.time)} · <b style="color:#ffd66b">${x.number}</b></span>`).join('')}</div></div>`).join(''):'<div class="slot" style="color:#e9d8c5">अभी पिछले दिनों का कोई प्रकाशित रिकॉर्ड नहीं है।</div>'}
+function render(){today();let now=new Date(),tk=dateKey(now),todayItems=results.filter(x=>x.date===tk&&stamp(x)<=now.getTime()).sort((a,b)=>a.time.localeCompare(b.time));let latest=todayItems[todayItems.length-1];let balls=document.getElementById('heroBalls');balls.innerHTML='';(latest?latest.number:'---').split('').forEach(n=>{let b=document.createElement('div');b.className='ball';b.textContent=n;balls.appendChild(b)});document.getElementById('heroTime').textContent=latest?'प्रकाशित समय: '+fmt(latest.time):'अभी कोई रिजल्ट प्रकाशित नहीं हुआ';let next=times.find(t=>!todayItems.some(x=>x.time===t));document.getElementById('nextText').textContent=next?'अगला निर्धारित स्लॉट: '+fmt(next):'आज के सभी स्लॉट पूरे हो गए';let html='';times.forEach(t=>{let x=todayItems.find(x=>x.time===t);html+=`<div class="slot ${x?'published':''}"><div class="slotHead"><span>${fmt(t)}</span><span class="status">${x?'PUBLISHED':'UPCOMING'}</span></div>${x?`<div class="num">${x.number}</div>`:'<div class="pending">रिजल्ट बाकी</div>'}</div>`});document.getElementById('slots').innerHTML=html;let days=[];for(let i=0;i<30;i++){let d=new Date();d.setDate(d.getDate()-i);let k=dateKey(d),arr=results.filter(x=>x.date===k&&stamp(x)<=now.getTime()).sort((a,b)=>a.time.localeCompare(b.time));if(arr.length)days.push({date:k,items:arr})}document.getElementById('history').innerHTML=days.length?days.map(day=>`<div class="slot" data-history-date="${day.date}" style="margin-bottom:9px"><b>${new Date(day.date+'T12:00:00').toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'})}</b><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${day.items.map(x=>`<span class="pill">${fmt(x.time)} · <b style="color:#ffd66b">${x.number}</b></span>`).join('')}</div></div>`).join(''):'<div class="slot" style="color:#e9d8c5">अभी पिछले दिनों का कोई प्रकाशित रिकॉर्ड नहीं है।</div>'}
 // Historical data is downloaded at most once per browser/day and reused locally.
 function saveCache(){try{localStorage.setItem(CACHE_KEY,JSON.stringify({day:dateKey(new Date()),items:results.filter(x=>x.date!==dateKey(new Date())).map(serialize)}))}catch(e){console.warn('Cache unavailable',e)}}
 try{const cache=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');if(cache?.day===dateKey(new Date())&&Array.isArray(cache.items)){results=cache.items.map(normalize)}}catch(e){console.warn('History cache unavailable',e)}
@@ -171,6 +187,33 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
  observer.observe(balls,{childList:true,characterData:true,subtree:true});
  detectResult();tick();setInterval(tick,200);
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick()});
+})();
+</script>
+
+<script>
+(function(){
+  const sel=document.getElementById('historyDateFilter');
+  const hist=document.getElementById('history');
+  const reset=document.getElementById('historyReset');
+  const dateEl=document.getElementById('proHeaderDate');
+  if(dateEl)dateEl.textContent=new Intl.DateTimeFormat('hi-IN',{timeZone:'Asia/Kolkata',day:'numeric',month:'long',year:'numeric'}).format(new Date());
+  if(!sel||!hist)return;
+  function update(){
+    const cards=[...hist.querySelectorAll('[data-history-date]')];
+    const days=[...new Set(cards.map(x=>x.dataset.historyDate))];
+    const old=sel.value;
+    const frag=document.createDocumentFragment();
+    const all=document.createElement('option');all.value='all';all.textContent='सभी उपलब्ध तारीखें';frag.appendChild(all);
+    days.forEach(d=>{const o=document.createElement('option');o.value=d;
+      const dt=new Date(d+'T12:00:00');o.textContent=dt.toLocaleDateString('hi-IN',{day:'numeric',month:'long',year:'numeric'});frag.appendChild(o)});
+    sel.replaceChildren(frag);
+    sel.value=days.includes(old)?old:'all';
+    cards.forEach(c=>{c.hidden=sel.value!=='all'&&c.dataset.historyDate!==sel.value});
+  }
+  sel.addEventListener('change',()=>hist.querySelectorAll('[data-history-date]').forEach(c=>{c.hidden=sel.value!=='all'&&c.dataset.historyDate!==sel.value}));
+  reset.addEventListener('click',()=>{sel.value='all';sel.dispatchEvent(new Event('change'))});
+  new MutationObserver(update).observe(hist,{childList:true});
+  update();
 })();
 </script>
 </body></html>

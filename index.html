@@ -59,12 +59,43 @@ header{background:linear-gradient(120deg,#200c12f5,#42171af5 60%,#26190bf5);box-
 .history-tools label{margin:0;font-size:13px;font-weight:800;color:#ffe5aa}
 .history-tools select{flex:1;min-width:140px;width:auto;font-size:13px;padding:10px;border-color:#d8ad6488}
 .history-tools button{padding:10px;background:#624520;color:#fff0c5;border:1px solid #e8bd6266}
+
+/* Mobile-first navigation and results overview; UI only. */
+.quick-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 14px}
+.quick-nav a{display:flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;text-align:center;min-height:44px;padding:9px 5px;border-radius:12px;border:1px solid #e8aa4680;background:linear-gradient(145deg,#501313,#240b0b);color:#fff0ce;font-size:clamp(11px,2.9vw,14px);font-weight:800}
+.quick-nav a:first-child{background:linear-gradient(135deg,#ffe66b,#e9a82b);color:#36120c;border-color:#ffe17b}
+.quick-nav a:focus-visible,.quick-nav a:hover{outline:2px solid #ffdd6b;outline-offset:2px}
+.draw-summary{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:14px}
+.draw-summary .countdown{margin:0;min-width:0;padding:15px 8px;display:flex;flex-direction:column;justify-content:center;min-height:155px}
+.draw-summary .countdown-label{font-size:clamp(12px,3vw,16px)}
+.draw-summary .countdown-clock{font-size:clamp(30px,8vw,52px);letter-spacing:1px}
+.draw-summary .countdown-slot{font-size:11px;line-height:1.4}
+.latest-mini{border:2px solid #eec34e;border-radius:22px;background:linear-gradient(140deg,#681719ed,#260d0be9);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 6px;min-width:0;box-shadow:0 6px 24px #0005}
+.latest-mini-label{font-size:clamp(11px,3vw,15px);font-weight:900;color:#fff0d6}
+.latest-mini-balls{display:flex;gap:4px;margin:10px 0 6px;justify-content:center}
+.latest-mini-balls span{width:clamp(25px,8vw,42px);height:clamp(25px,8vw,42px);display:grid;place-items:center;border-radius:50%;border:2px solid #fff9;font-size:clamp(16px,4.5vw,23px);font-weight:1000;color:white;text-shadow:0 2px 3px #0007;box-shadow:inset -3px -4px 6px #0006,inset 2px 3px 5px #fff6}
+.latest-mini-balls span:nth-child(1){background:radial-gradient(circle at 30% 25%,#ff9eb9,#c80e4f)}
+.latest-mini-balls span:nth-child(2){background:radial-gradient(circle at 30% 25%,#a6ddff,#1758b6)}
+.latest-mini-balls span:nth-child(3){background:radial-gradient(circle at 30% 25%,#ffefa2,#d18b10)}
+.latest-mini-time{color:#ffe7a4;font-size:12px;font-weight:800}
+.recent-panel{border:1px solid #ffd66a9e;border-radius:18px;background:linear-gradient(130deg,#5b0f16ef,#290b0bef);padding:13px;margin:0 0 17px;box-shadow:0 8px 22px #0005}
+.recent-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.recent-head strong{font-size:clamp(13px,3.8vw,17px)}
+.recent-head a{color:#ffe06a;text-decoration:none;border:1px solid #f3c857;border-radius:99px;padding:5px 8px;font-size:11px;white-space:nowrap}
+.recent-list{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
+.recent-item{min-width:0;text-align:center;border:1px solid #e9b53d;border-radius:11px;background:#3b0b14;padding:7px 2px}
+.recent-item small{display:block;font-size:clamp(9px,2.2vw,12px);color:#fff;white-space:nowrap}
+.recent-item b{display:block;font-size:clamp(14px,4vw,23px);color:#ffe44c;letter-spacing:1px;margin-top:4px}
+.recent-empty{grid-column:1/-1;color:#f0d8c6;font-size:13px;text-align:center;padding:12px}
+#today-results,#history-section,#next-result{scroll-margin-top:12px}
+@media(max-width:360px){.quick-nav a{font-size:10px}.recent-item b{letter-spacing:0}.latest-mini-balls{gap:2px}}
+@media(prefers-reduced-motion:reduce){.quick-nav a,.recent-panel{scroll-behavior:auto}}
 </style></head>
 <body><div class="lucky-bg-balls" aria-hidden="true"><span class="lucky-bg-ball" style="--x:5%;--y:13%;--size:66px;--light:#ff9cc6;--dark:#b80f50;--dur:7.4s;--delay:-2s">4</span><span class="lucky-bg-ball" style="--x:79%;--y:19%;--size:58px;--light:#9cddff;--dark:#1354b4;--dur:8.7s;--delay:-5s">7</span><span class="lucky-bg-ball" style="--x:12%;--y:38%;--size:53px;--light:#f8e588;--dark:#d87b09;--dur:9.2s;--delay:-3s">2</span><span class="lucky-bg-ball" style="--x:83%;--y:47%;--size:70px;--light:#b9f4ab;--dark:#267d36;--dur:7.8s;--delay:-6s">9</span><span class="lucky-bg-ball" style="--x:4%;--y:66%;--size:60px;--light:#d5aaff;--dark:#7137ba;--dur:10s;--delay:-4s">5</span><span class="lucky-bg-ball" style="--x:77%;--y:78%;--size:56px;--light:#ffb5a5;--dark:#d23824;--dur:8.1s;--delay:-1s">1</span><span class="lucky-bg-ball" style="--x:32%;--y:90%;--size:48px;--light:#a5f5f0;--dark:#087e86;--dur:9.6s;--delay:-7s">8</span><span class="lucky-bg-ball" style="--x:63%;--y:7%;--size:43px;--light:#ffe1a6;--dark:#a86b0a;--dur:10.4s;--delay:-3s">3</span></div><header><div class="brand">★ LUCKY LOTTERY ★</div><div class="sub">TRIPLE DIGIT • DAILY RESULT BOARD</div><div class="pro-meta"><span><i class="pro-dot"></i>RESULT BOARD ACTIVE</span><span id="proHeaderDate">आज के परिणाम</span><span>10:00 AM – 9:00 PM IST</span></div></header>
-<main class="wrap"><div class="result-ticker"><span class="ticker-label">📢 LIVE RESULTS</span><div class="ticker-window"><span class="ticker-content" id="resultTicker">आज के रिजल्ट लोड हो रहे हैं…</span></div></div><section class="countdown" aria-live="off"><div class="countdown-label">⏳ अगला रिजल्ट आने में</div><div class="countdown-clock" id="countdownClock">--:--</div><div class="countdown-slot" id="countdownSlot">समय देखा जा रहा है…</div></section><div class="top"><span class="pill" id="today">रिजल्ट लोड हो रहे हैं…</span></div><div class="share-row"><a class="whatsapp-share" id="whatsappShare" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div>
-<section class="hero"><div class="eyebrow">TODAY'S TRIPLE DIGIT RESULT</div><div class="balls" id="heroBalls"><div class="ball">—</div><div class="ball">—</div><div class="ball">—</div></div><div class="resultMeta" id="heroTime">आज का प्रकाशित रिजल्ट</div><div class="next" id="nextText">रिजल्ट लोड हो रहे हैं…</div></section>
+<main class="wrap"><nav class="quick-nav" aria-label="रिजल्ट नेविगेशन"><a href="#today-results">⌂ Today Result</a><a href="#history-section">▦ History</a><a href="#next-result">◷ Next Result</a></nav><div class="result-ticker"><span class="ticker-label">📢 LIVE RESULTS</span><div class="ticker-window"><span class="ticker-content" id="resultTicker">आज के रिजल्ट लोड हो रहे हैं…</span></div></div><div class="draw-summary" id="next-result"><section class="countdown" aria-live="off"><div class="countdown-label">⏳ अगला रिजल्ट आने में</div><div class="countdown-clock" id="countdownClock">--:--</div><div class="countdown-slot" id="countdownSlot">समय देखा जा रहा है…</div></section><aside class="latest-mini" aria-label="पिछला रिजल्ट"><div class="latest-mini-label">आज का पिछला रिजल्ट</div><div class="latest-mini-balls" id="latestMiniBalls"><span>–</span><span>–</span><span>–</span></div><div class="latest-mini-time" id="latestMiniTime">अभी उपलब्ध नहीं</div></aside></div><section class="recent-panel" aria-label="आज के अंतिम पाँच रिजल्ट"><div class="recent-head"><strong>📊 Last 5 Results</strong><a href="#today-results">पूरा रिजल्ट देखें ›</a></div><div class="recent-list" id="recentResults"><div class="recent-empty">रिजल्ट लोड हो रहे हैं…</div></div></section><div class="top"><span class="pill" id="today">रिजल्ट लोड हो रहे हैं…</span></div><div class="share-row"><a class="whatsapp-share" id="whatsappShare" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div>
+<section class="hero" id="today-results"><div class="eyebrow">TODAY'S TRIPLE DIGIT RESULT</div><div class="balls" id="heroBalls"><div class="ball">—</div><div class="ball">—</div><div class="ball">—</div></div><div class="resultMeta" id="heroTime">आज का प्रकाशित रिजल्ट</div><div class="next" id="nextText">रिजल्ट लोड हो रहे हैं…</div></section>
 <div class="sectionTitle"><h2>आज के रिजल्ट</h2><small>10:00 AM – 9:00 PM</small></div><div class="grid" id="slots"></div>
-<div class="sectionTitle"><h2>पिछले 30 दिन</h2><small>पुराने प्रकाशित रिजल्ट</small></div><div class="history-tools"><label for="historyDateFilter">📅 तारीख चुनें</label><select id="historyDateFilter" aria-label="पुराने रिजल्ट की तारीख"><option value="all">सभी उपलब्ध तारीखें</option></select><button type="button" id="historyReset">सभी</button></div><div id="history"></div>
+<div class="sectionTitle" id="history-section"><h2>पिछले 30 दिन</h2><small>पुराने प्रकाशित रिजल्ट</small></div><div class="history-tools"><label for="historyDateFilter">📅 तारीख चुनें</label><select id="historyDateFilter" aria-label="पुराने रिजल्ट की तारीख"><option value="all">सभी उपलब्ध तारीखें</option></select><button type="button" id="historyReset">सभी</button></div><div id="history"></div>
 <p class="note">⚠️ यह वेबसाइट केवल मनोरंजन (Fun Use) के लिए है। इसका किसी भी प्रकार की वास्तविक पैसे की लॉटरी या जुए से संबंध नहीं है। यहाँ कोई दांव, पैसे का लेनदेन या पुरस्कार की सुविधा नहीं है।</p></main>
 <div id="drawOverlay" role="status" aria-live="off" aria-label="अगला रिजल्ट आने वाला है"><div class="drawBrand">★ LUCKY LOTTERY ★</div><div class="drawLabel">⏳ अगला रिजल्ट आने में</div><div class="drawDigit" id="drawDigit">10</div><div class="drawNote">सेकंड • मनोरंजन के लिए</div></div>
 <script type="module">
@@ -214,6 +245,38 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
   reset.addEventListener('click',()=>{sel.value='all';sel.dispatchEvent(new Event('change'))});
   new MutationObserver(update).observe(hist,{childList:true});
   update();
+})();
+</script>
+
+<script>
+/* UI-only: copies already-rendered results; no Firebase calls or changes to result loading. */
+(function(){
+ const slots=document.getElementById('slots');
+ const mini=document.getElementById('latestMiniBalls');
+ const miniTime=document.getElementById('latestMiniTime');
+ const recent=document.getElementById('recentResults');
+ if(!slots||!mini||!recent)return;
+ let previous='';
+ function refresh(){
+   const entries=[...slots.querySelectorAll('.slot.published')].map(card=>({
+     time:card.querySelector('.slotHead span')?.textContent?.trim()||'',
+     number:card.querySelector('.num')?.textContent?.trim()||''
+   })).filter(x=>/^\d{3}$/.test(x.number));
+   const last=entries.slice(-5).reverse();
+   const key=last.map(x=>x.time+'|'+x.number).join(';');
+   if(key===previous)return;
+   previous=key;
+   const latest=last[0];
+   mini.replaceChildren(...(latest?latest.number:'–––').split('').map(n=>{
+     const el=document.createElement('span');el.textContent=n;return el;
+   }));
+   miniTime.textContent=latest?latest.time:'अभी उपलब्ध नहीं';
+   recent.replaceChildren();
+   if(!last.length){const el=document.createElement('div');el.className='recent-empty';el.textContent='अभी कोई प्रकाशित रिजल्ट नहीं';recent.appendChild(el);return}
+   for(const x of last){const el=document.createElement('div');el.className='recent-item';const t=document.createElement('small');t.textContent=x.time;const n=document.createElement('b');n.textContent=x.number;el.append(t,n);recent.appendChild(el)}
+ }
+ new MutationObserver(refresh).observe(slots,{childList:true});
+ refresh();
 })();
 </script>
 </body></html>

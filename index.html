@@ -104,6 +104,41 @@ header{background:linear-gradient(120deg,#200c12f5,#42171af5 60%,#26190bf5);box-
 .class-badge{display:inline-block;border-radius:999px;padding:7px 13px;font-size:13px;font-weight:900;border:1px solid #ffffff66;color:#fff}
 .class-badge.red{background:#bb263b}.class-badge.green{background:#16884b}.class-badge.odd-even{background:#48251a;border-color:#ffe34d99;color:#ffe34d}
 .slot-classification{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.slot-classification .class-badge{font-size:10px;padding:4px 8px}
+
+/* 2026 compact premium red-and-gold mobile refresh; presentation only. */
+:root{--gold:#ffdc66;--muted:#f0c9a9}
+body{background:radial-gradient(ellipse at 48% 9%,#a82c21 0%,transparent 48%),linear-gradient(165deg,#77150f 0%,#9b2819 42%,#4d0c0c 100%)}
+body:before{opacity:.035}
+header{padding:14px 12px 12px;background:linear-gradient(145deg,#69110deF,#330b0bed);border-bottom:1px solid #f3c15e75}
+.brand{font-family:Georgia,serif;font-size:clamp(25px,6vw,36px);letter-spacing:.7px;color:#ffe38a;text-shadow:0 2px 0 #852b09,0 4px 15px #0008}
+.sub{color:#f9dca3;font-size:10px;letter-spacing:1.6px}
+.pro-meta{margin-top:7px;gap:5px}.pro-meta span{padding:4px 7px;font-size:10px}
+.wrap{max-width:740px;padding:12px 12px 35px;display:flex;flex-direction:column}
+.bell-bar{order:1;margin:0 0 9px;gap:6px}.bell-hint{font-size:10px}.bell-toggle{padding:7px 10px;font-size:11px}
+.quick-nav{order:2;margin-bottom:9px;gap:6px}.quick-nav a{min-height:35px;padding:6px 3px;border-radius:10px;font-size:11px}
+.top{order:3;margin:0 0 8px}.pill{padding:6px 10px;font-size:11px}
+.share-row{order:4;margin:0 0 10px}.whatsapp-share{padding:9px 13px;border-radius:13px;font-size:12px}
+.hero{order:5;background:linear-gradient(145deg,#84221f,#54110e 63%,#351a0c);border:1.5px solid #eac268;border-radius:24px;padding:20px 12px 18px;box-shadow:0 12px 30px #0005}
+.eyebrow{color:#ffe6bd;font-size:clamp(11px,2.8vw,15px);letter-spacing:1.5px}
+.balls{gap:10px;margin:17px 0 9px}.ball{width:clamp(68px,20vw,98px);height:clamp(68px,20vw,98px);font-size:clamp(34px,9vw,50px);border-width:4px}
+.result-classification{margin:9px 0 8px;gap:8px}.class-badge{padding:6px 12px;font-size:12px}.class-badge.red{background:linear-gradient(135deg,#e13d49,#a71731)}.class-badge.green{background:linear-gradient(135deg,#20ae63,#087c43)}.class-badge.odd-even{background:#42200f;color:#ffe27c;border-color:#e6b951}
+.resultMeta{font-size:12px}.next{font-size:12px;margin-top:7px;color:#f4d2bd}
+.draw-summary{order:6;gap:8px;margin:11px 0 10px}.draw-summary .countdown{min-height:104px;padding:10px 6px;border-width:1px;border-radius:16px}.draw-summary .countdown-label{font-size:11px}.draw-summary .countdown-clock{font-size:clamp(27px,8vw,40px)}.draw-summary .countdown-slot{font-size:10px}
+.latest-mini{border-width:1px;border-radius:16px;padding:8px 5px}.latest-mini-label{font-size:11px}.latest-mini-balls{margin:6px 0 4px}.latest-mini-balls span{width:clamp(24px,7vw,36px);height:clamp(24px,7vw,36px);font-size:18px}.latest-mini-time{font-size:11px}
+.recent-panel{order:7;margin:0 0 9px;padding:10px;border-radius:14px}.recent-head{margin-bottom:7px}.recent-head strong{font-size:13px}.recent-item{padding:6px 1px}.recent-item b{font-size:clamp(13px,3.5vw,20px)}
+.result-ticker{order:8;width:100%;margin:0 0 10px;padding:7px 9px;border-radius:11px}
+.sectionTitle{margin:15px 1px 10px}.sectionTitle h2{font-size:18px}.sectionTitle small{font-size:11px}
+.sectionTitle:has(+ #slots){order:9}#slots{order:10}
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.slot{min-width:0;min-height:114px;padding:11px 10px;border-radius:16px;background:linear-gradient(145deg,#6b241b,#3d1710);border:1px solid #e4b55d88}
+.slot.published{background:linear-gradient(145deg,#71301d,#3a160f)}
+.slotHead{gap:4px;font-size:clamp(11px,3.1vw,14px)}.status{padding:4px 6px;font-size:9px;white-space:nowrap}
+.num{font-size:clamp(25px,7vw,35px);margin-top:8px;letter-spacing:4px}
+.slot-classification{margin-top:7px;gap:4px}.slot-classification .class-badge{font-size:10px;padding:4px 7px}
+.pending{font-size:12px}
+#history-section{order:11}.history-tools{order:12;margin-bottom:10px}#history{order:13}.note{order:14;margin-top:17px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.wrap{padding:18px 18px 45px}}
+@media(max-width:360px){.slot{padding:10px 7px}.slotHead{font-size:11px}.status{font-size:8px;padding:3px 4px}.slot-classification .class-badge{font-size:9px;padding:4px 5px}.balls{gap:7px}}
 </style></head>
 <body><div class="lucky-bg-balls" aria-hidden="true"><span class="lucky-bg-ball" style="--x:5%;--y:13%;--size:66px;--light:#ff9cc6;--dark:#b80f50;--dur:7.4s;--delay:-2s">4</span><span class="lucky-bg-ball" style="--x:79%;--y:19%;--size:58px;--light:#9cddff;--dark:#1354b4;--dur:8.7s;--delay:-5s">7</span><span class="lucky-bg-ball" style="--x:12%;--y:38%;--size:53px;--light:#f8e588;--dark:#d87b09;--dur:9.2s;--delay:-3s">2</span><span class="lucky-bg-ball" style="--x:83%;--y:47%;--size:70px;--light:#b9f4ab;--dark:#267d36;--dur:7.8s;--delay:-6s">9</span><span class="lucky-bg-ball" style="--x:4%;--y:66%;--size:60px;--light:#d5aaff;--dark:#7137ba;--dur:10s;--delay:-4s">5</span><span class="lucky-bg-ball" style="--x:77%;--y:78%;--size:56px;--light:#ffb5a5;--dark:#d23824;--dur:8.1s;--delay:-1s">1</span><span class="lucky-bg-ball" style="--x:32%;--y:90%;--size:48px;--light:#a5f5f0;--dark:#087e86;--dur:9.6s;--delay:-7s">8</span><span class="lucky-bg-ball" style="--x:63%;--y:7%;--size:43px;--light:#ffe1a6;--dark:#a86b0a;--dur:10.4s;--delay:-3s">3</span></div><header><div class="brand">★ LUCKY LOTTERY ★</div><div class="sub">TRIPLE DIGIT • DAILY RESULT BOARD</div><div class="pro-meta"><span><i class="pro-dot"></i>RESULT BOARD ACTIVE</span><span id="proHeaderDate">आज के परिणाम</span><span>10:00 AM – 9:00 PM IST</span></div></header>
 <main class="wrap"><div class="bell-bar"><span class="bell-hint">नया रिजल्ट आने पर आवाज (साइट खुली हो)</span><button type="button" class="bell-toggle" id="resultBell" aria-pressed="false">🔕 Bell OFF</button></div><nav class="quick-nav" aria-label="रिजल्ट नेविगेशन"><a href="#today-results">⌂ Today Result</a><a href="#history-section">▦ History</a><a href="#next-result">◷ Next Result</a></nav><div class="result-ticker"><span class="ticker-label">📢 LIVE RESULTS</span><div class="ticker-window"><span class="ticker-content" id="resultTicker">आज के रिजल्ट लोड हो रहे हैं…</span></div></div><div class="draw-summary" id="next-result"><section class="countdown" aria-live="off"><div class="countdown-label">⏳ अगला रिजल्ट आने में</div><div class="countdown-clock" id="countdownClock">--:--</div><div class="countdown-slot" id="countdownSlot">समय देखा जा रहा है…</div></section><aside class="latest-mini" aria-label="पिछला रिजल्ट"><div class="latest-mini-label">आज का पिछला रिजल्ट</div><div class="latest-mini-balls" id="latestMiniBalls"><span>–</span><span>–</span><span>–</span></div><div class="latest-mini-time" id="latestMiniTime">अभी उपलब्ध नहीं</div></aside></div><section class="recent-panel" aria-label="आज के अंतिम पाँच रिजल्ट"><div class="recent-head"><strong>📊 Last 5 Results</strong><a href="#today-results">पूरा रिजल्ट देखें ›</a></div><div class="recent-list" id="recentResults"><div class="recent-empty">रिजल्ट लोड हो रहे हैं…</div></div></section><div class="top"><span class="pill" id="today">रिजल्ट लोड हो रहे हैं…</span></div><div class="share-row"><a class="whatsapp-share" id="whatsappShare" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div>

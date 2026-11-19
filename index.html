@@ -488,8 +488,8 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
 </script>
 
 <script>
-/* T20 only. Snapshots are stored ONLY if API is observed at an exact milestone.
-   A live summary endpoint cannot reconstruct earlier over scores. */
+/* T20 score milestones: read server-side KV history when available, and preserve
+   browser snapshots. Never invent scores for an over that was not observed. */
 (function(){
  const endpoint='https://lucky-cricket-api.luckylottry5.workers.dev';
  const status=document.getElementById('cricketStatus'),list=document.getElementById('cricketList'),button=document.getElementById('cricketRefresh');
@@ -506,14 +506,47 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
  function matchKey(m){return str(m.id||m.matchId||m.name)+'|'+str(m.date||m.dateTimeGMT||'')}
  function oversToBalls(o){const x=str(o);if(!/^\d+(?:\.[0-5])?$/.test(x))return null;const [whole,part='0']=x.split('.');return Number(whole)*6+Number(part)}
  function findInning(scores,name,index){return scores.find(x=>str(x.inning).toLowerCase().includes(str(name).toLowerCase()))||(scores.length===2?scores[index]:null)}
- function render(matches){
+ function validScore(value){
+  if(typeof value==='string')return /^\d+\/\d+$/.test(value.trim())?value.trim():null;
+  if(!value||typeof value!=='object')return null;
+  const runs=value.runs??value.r, wickets=value.wickets??value.w;
+  if(!Number.isInteger(Number(runs))||!Number.isInteger(Number(wickets))||Number(runs)<0||Number(wickets)<0||Number(wickets)>10)return null;
+  return `${Number(runs)}/${Number(wickets)}`;
+ }
+ function historyFor(match,root){
+  const id=str(match.id||match.matchId||'');
+  // The Worker may attach overHistory per match, or expose a keyed top-level map.
+  const local=match.overHistory||match.over_history;
+  if(local&&typeof local==='object')return local;
+  const all=root?.overHistory||root?.over_history;
+  if(!all||typeof all!=='object')return {};
+  return (id&&all[id])||all['t20:'+id]||all[matchKey(match)]||{};
+ }
+ function serverScore(history,score,teamName,index,over){
+  if(!history||typeof history!=='object')return null;
+  const inning=str(score?.inning||'');
+  const candidates=[inning,str(index+1),str(index),teamName];
+  // Worker history format: {"1":{"6":{runs,wickets,...}}}.
+  for(const candidate of candidates){
+   if(!candidate)continue;
+   const item=history[candidate];
+   if(item&&typeof item==='object'){
+    const found=validScore(item[over]??item[str(over)]);
+    if(found)return found;
+   }
+  }
+  // Also accept a flat over key only if it is unambiguously a single innings record.
+  if(history.inning&&inning&&str(history.inning).toLowerCase()===inning.toLowerCase())return validScore(history[over]);
+  return null;
+ }
+ function render(matches,root){
   list.replaceChildren();
-  if(!matches.length){list.appendChild(element('div','cricket-empty','अभी कोई T20 मैच उपलब्ध नहीं है।'));return}
+  if(!matches.length){list.appendChild(element('div','cricket-empty','अभी कोई लाइव T20 मैच उपलब्ध नहीं है।'));return}
   let changed=false;
   for(const m of matches.slice(0,8)){
    const box=element('article','cricket-match');
    box.appendChild(element('div','cricket-match-title',str(m.name||'T20 Match')));
-   const teams=names(m),scores=scoreInnings(m),mk=matchKey(m);
+   const teams=names(m),scores=scoreInnings(m),mk=matchKey(m),history=historyFor(m,root);
    for(let i=0;i<2;i++){
     const name=str(teams[i]||'Team '+(i+1)),sc=findInning(scores,name,i);
     const section=element('section','cricket-innings');
@@ -527,11 +560,12 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
     if(!snapshots[inningKey])snapshots[inningKey]={};
     for(const over of milestones){
      const cell=element('div','cricket-over');cell.appendChild(element('b','',over+' OVER'));
-     // Exact score only when feed reports exactly N completed overs.
+     const fromWorker=serverScore(history,sc,name,i,over);
+     if(fromWorker&&snapshots[inningKey][over]!==fromWorker){snapshots[inningKey][over]=fromWorker;changed=true}
      if(sc&&currentBalls===over*6&&!snapshots[inningKey][over]){
-       snapshots[inningKey][over]=`${sc.r??0}/${sc.w??0}`;changed=true;
+      snapshots[inningKey][over]=`${sc.r??0}/${sc.w??0}`;changed=true;
      }
-     const saved=snapshots[inningKey][over];
+     const saved=validScore(snapshots[inningKey][over]);
      const pending=currentBalls===null||currentBalls<over*6;
      if(saved){cell.appendChild(element('strong','',saved));cell.appendChild(element('small','','रन / विकेट'))}
      else{cell.classList.add('missing');cell.appendChild(element('strong','',pending?'Pending':'N/A'));cell.appendChild(element('small','',pending?'ओवर बाकी':'डेटा उपलब्ध नहीं'))}
@@ -543,20 +577,22 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
    list.appendChild(box);
   }
   if(changed){try{localStorage.setItem(key,JSON.stringify(snapshots))}catch(e){console.warn('Snapshot storage unavailable',e)}}
-  list.appendChild(element('div','cricket-disclaimer','6/10/15/20 ओवर के पुराने स्कोर तभी दिखेंगे जब सटीक डेटा उपलब्ध हो। N/A का मतलब स्कोर उपलब्ध नहीं है, अनुमान नहीं लगाया गया।'));
+  list.appendChild(element('div','cricket-disclaimer','6/10/15/20 ओवर के वास्तविक स्कोर Worker में सेव होने पर सभी विज़िटर को दिखेंगे। पुराने ओवर का रिकॉर्ड न होने पर N/A दिखेगा; अनुमान नहीं लगाया जाएगा।'));
  }
  let loading=false;
  async function refresh(){
   if(loading)return;loading=true;button.disabled=true;status.textContent='T20 स्कोर अपडेट हो रहे हैं…';
   try{
    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
-   let response;try{response=await fetch(endpoint,{signal:controller.signal})}finally{clearTimeout(timer)}
+   let response;try{response=await fetch(endpoint,{signal:controller.signal,cache:'no-store'})}finally{clearTimeout(timer)}
    if(!response.ok)throw Error('HTTP '+response.status);
    const json=await response.json(),all=getMatches(json);
    if(json.error&&!all.length)throw Error(str(json.error));
    const t20=all.filter(isT20).filter(m=>m.matchStarted===true&&m.matchEnded!==true);
-   render(t20);
-   status.textContent='T20 लाइव मैच • अंतिम अपडेट: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+   render(t20,json);
+   const updated=json.updatedAt?new Date(json.updatedAt):new Date();
+   const valid=Number.isFinite(updated.getTime());
+   status.textContent='T20 लाइव मैच • डेटा अपडेट: '+(valid?updated:new Date()).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'});
   }catch(err){status.textContent='स्कोर लोड नहीं हो सके। API कनेक्शन जाँचें।';list.textContent='Refresh दबाकर दोबारा कोशिश करें।';console.warn('T20 cricket',err)}
   finally{loading=false;button.disabled=false}
  }

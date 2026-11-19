@@ -197,6 +197,22 @@ main.wrap{position:relative;z-index:1}
 .cricket-teams{display:flex;justify-content:space-between;gap:9px;font-size:13px;font-weight:800;flex-wrap:wrap}
 .cricket-match small{display:block;color:#f1d19e;margin-top:6px;font-size:11px}
 .cricket-empty{color:#e9d1bc;font-size:12px;padding:8px 0}
+
+/* T20 over-wise score cards. Exact milestones only; never estimate past scores. */
+.cricket-panel{background:linear-gradient(145deg,#3a100d,#1c0a0a);border-color:#e8ba59}
+.cricket-match{background:linear-gradient(140deg,#41150f,#210b0c);padding:12px;border-color:#d9a34f}
+.cricket-match-title{font-weight:900;color:#ffe2a0;font-size:14px;line-height:1.35;margin-bottom:7px}
+.cricket-innings{margin-top:10px;padding-top:9px;border-top:1px solid #d9a34f55}
+.cricket-innings-head{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12px;font-weight:800;color:#f9e7c9;margin-bottom:7px}
+.cricket-overs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+.cricket-over{border:1px solid #e9b75b;background:#641c14;border-radius:9px;text-align:center;padding:9px 2px;min-width:0}
+.cricket-over b{display:block;color:#ffdc7a;font-size:10px;margin-bottom:6px}
+.cricket-over strong{display:block;font-size:clamp(12px,3.4vw,19px);color:#fff;white-space:nowrap}
+.cricket-over small{display:block;font-size:9px;color:#f3cda4;margin-top:3px}
+.cricket-over.missing{background:#2c1818;border-color:#7d5750}
+.cricket-over.missing strong{color:#d2b9b0;font-size:11px}
+.cricket-match-status{color:#e6c8a4;font-size:11px;margin-top:9px}
+.cricket-disclaimer{font-size:10px;color:#f0d1ae;margin-top:8px;line-height:1.5}
 </style></head>
 <body><div class="lucky-bg-balls" aria-hidden="true"><span class="lucky-bg-ball" style="--x:5%;--y:13%;--size:66px;--light:#ff9cc6;--dark:#b80f50;--dur:7.4s;--delay:-2s">4</span><span class="lucky-bg-ball" style="--x:79%;--y:19%;--size:58px;--light:#9cddff;--dark:#1354b4;--dur:8.7s;--delay:-5s">7</span><span class="lucky-bg-ball" style="--x:12%;--y:38%;--size:53px;--light:#f8e588;--dark:#d87b09;--dur:9.2s;--delay:-3s">2</span><span class="lucky-bg-ball" style="--x:83%;--y:47%;--size:70px;--light:#b9f4ab;--dark:#267d36;--dur:7.8s;--delay:-6s">9</span><span class="lucky-bg-ball" style="--x:4%;--y:66%;--size:60px;--light:#d5aaff;--dark:#7137ba;--dur:10s;--delay:-4s">5</span><span class="lucky-bg-ball" style="--x:77%;--y:78%;--size:56px;--light:#ffb5a5;--dark:#d23824;--dur:8.1s;--delay:-1s">1</span><span class="lucky-bg-ball" style="--x:32%;--y:90%;--size:48px;--light:#a5f5f0;--dark:#087e86;--dur:9.6s;--delay:-7s">8</span><span class="lucky-bg-ball" style="--x:63%;--y:7%;--size:43px;--light:#ffe1a6;--dark:#a86b0a;--dur:10.4s;--delay:-3s">3</span></div><header><div class="header-line"><button type="button" class="header-control" id="headerMenu" aria-label="मेनू खोलें" aria-expanded="false">☰</button><div class="brand">Lucky Lottery</div><button type="button" class="header-control" id="headerBell" aria-label="रिजल्ट बेल चालू या बंद करें">🔕</button></div><div class="header-sub">✦ TRIPLE DIGIT RESULTS ✦</div><div class="header-bottom"><span class="date-chip" id="headerDate">आज के परिणाम</span><a class="whatsapp-share" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div><div class="header-menu-panel" id="headerMenuPanel"><a href="#today-results">आज का रिजल्ट</a><a href="#slots">सभी रिजल्ट</a><a href="#history-section">पिछले 30 दिन</a><a href="#next-result">अगला रिजल्ट</a></div></header>
 <main class="wrap"><section class="cricket-panel" id="live-cricket" aria-label="लाइव क्रिकेट स्कोर"><div class="cricket-head"><span>🏏 LIVE CRICKET SCORE</span><button type="button" class="cricket-refresh" id="cricketRefresh">↻ Refresh</button></div><div class="cricket-status" id="cricketStatus" role="status">स्कोर लोड हो रहे हैं…</div><div class="cricket-list" id="cricketList"><div class="cricket-empty">कृपया प्रतीक्षा करें…</div></div></section><div class="bell-bar"><span class="bell-hint">नया रिजल्ट आने पर आवाज (साइट खुली हो)</span><button type="button" class="bell-toggle" id="resultBell" aria-pressed="false">🔕 Bell OFF</button></div><nav class="quick-nav" aria-label="रिजल्ट नेविगेशन"><a href="#today-results">⌂ Today Result</a><a href="#history-section">▦ History</a><a href="#next-result">◷ Next Result</a></nav><div class="result-ticker"><span class="ticker-label">📢 LIVE RESULTS</span><div class="ticker-window"><span class="ticker-content" id="resultTicker">आज के रिजल्ट लोड हो रहे हैं…</span></div></div><div class="draw-summary" id="next-result"><section class="countdown" aria-live="off"><div class="countdown-label">⏳ अगला रिजल्ट आने में</div><div class="countdown-clock" id="countdownClock">--:--</div><div class="countdown-slot" id="countdownSlot">समय देखा जा रहा है…</div></section><aside class="latest-mini" aria-label="पिछला रिजल्ट"><div class="latest-mini-label">आज का पिछला रिजल्ट</div><div class="latest-mini-balls" id="latestMiniBalls"><span>–</span><span>–</span><span>–</span></div><div class="latest-mini-time" id="latestMiniTime">अभी उपलब्ध नहीं</div></aside></div><section class="today-summary" aria-label="आज के रिजल्ट का रंग और ऑड ईवन सारांश"><div class="summary-title">आज का सारांश (Today Summary)</div><div class="summary-grid"><div class="summary-cell summary-red"><span>RED</span><b id="countRed">0</b></div><div class="summary-cell summary-green"><span>GREEN</span><b id="countGreen">0</b></div><div class="summary-cell summary-odd"><span>ODD</span><b id="countOdd">0</b></div><div class="summary-cell summary-even"><span>EVEN</span><b id="countEven">0</b></div></div></section><section class="recent-panel" aria-label="आज के अंतिम पाँच रिजल्ट"><div class="recent-head"><strong>📊 Last 5 Results</strong><a href="#today-results">पूरा रिजल्ट देखें ›</a></div><div class="recent-list" id="recentResults"><div class="recent-empty">रिजल्ट लोड हो रहे हैं…</div></div></section><div class="top"><span class="pill" id="today">रिजल्ट लोड हो रहे हैं…</span></div><div class="share-row"><a class="whatsapp-share" id="whatsappShare" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div>
@@ -472,63 +488,81 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
 </script>
 
 <script>
-/* Cricket scores via Cloudflare Worker. API key stays in Worker secret. */
+/* T20 only. Snapshots are stored ONLY if API is observed at an exact milestone.
+   A live summary endpoint cannot reconstruct earlier over scores. */
 (function(){
-  const endpoint='https://lucky-cricket-api.luckylottry5.workers.dev';
-  const status=document.getElementById('cricketStatus');
-  const list=document.getElementById('cricketList');
-  const button=document.getElementById('cricketRefresh');
-  if(!status||!list||!button)return;
-  const text=v=>String(v??'');
-  function render(matches){
-    list.replaceChildren();
-    if(!matches.length){list.textContent='अभी कोई लाइव मैच उपलब्ध नहीं है।';return}
-    for(const match of matches.slice(0,8)){
-      const box=document.createElement('div');box.className='cricket-match';
-      const title=document.createElement('strong');title.textContent=text(match.name||match.matchType||'Cricket Match');
-      const teams=document.createElement('div');teams.className='cricket-teams';
-      const names=Array.isArray(match.teams)?match.teams:Array.isArray(match.teamInfo)?match.teamInfo.map(x=>x.name):[];
-      const scores=Array.isArray(match.score)?match.score:[];
-      for(let i=0;i<2;i++){
-        const side=document.createElement('span');
-        const name=text(names[i]||'Team '+(i+1));
-        const inning=scores.find(x=>x.inning&&text(x.inning).toLowerCase().includes(name.toLowerCase()));
-        const fallback=scores.length===2?scores[i]:null;
-        const score=inning||fallback;
-        side.textContent=name+': '+(score?`${score.r??0}/${score.w??0} (${score.o??0} ov)`:'—');
-        teams.appendChild(side);
-      }
-      const detail=document.createElement('small');detail.textContent=text(match.status||'Score updating');
-      box.append(title,teams,detail);list.appendChild(box);
+ const endpoint='https://lucky-cricket-api.luckylottry5.workers.dev';
+ const status=document.getElementById('cricketStatus'),list=document.getElementById('cricketList'),button=document.getElementById('cricketRefresh');
+ if(!status||!list||!button)return;
+ const milestones=[6,10,15,20],key='lucky_t20_over_snapshots_v1';
+ let snapshots={};
+ try{snapshots=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(e){snapshots={}}
+ const str=v=>String(v??'');
+ function element(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e}
+ function getMatches(json){return Array.isArray(json)?json:Array.isArray(json.matches)?json.matches:Array.isArray(json.data)?json.data:Array.isArray(json.data?.matches)?json.data.matches:[]}
+ function isT20(m){return /t20/i.test(str(m.matchType))||/t20/i.test(str(m.name))}
+ function scoreInnings(m){return Array.isArray(m.score)?m.score:[]}
+ function names(m){return Array.isArray(m.teams)?m.teams:Array.isArray(m.teamInfo)?m.teamInfo.map(t=>t.name):[]}
+ function matchKey(m){return str(m.id||m.matchId||m.name)+'|'+str(m.date||m.dateTimeGMT||'')}
+ function oversToBalls(o){const x=str(o);if(!/^\d+(?:\.[0-5])?$/.test(x))return null;const [whole,part='0']=x.split('.');return Number(whole)*6+Number(part)}
+ function findInning(scores,name,index){return scores.find(x=>str(x.inning).toLowerCase().includes(str(name).toLowerCase()))||(scores.length===2?scores[index]:null)}
+ function render(matches){
+  list.replaceChildren();
+  if(!matches.length){list.appendChild(element('div','cricket-empty','अभी कोई T20 मैच उपलब्ध नहीं है।'));return}
+  let changed=false;
+  for(const m of matches.slice(0,8)){
+   const box=element('article','cricket-match');
+   box.appendChild(element('div','cricket-match-title',str(m.name||'T20 Match')));
+   const teams=names(m),scores=scoreInnings(m),mk=matchKey(m);
+   for(let i=0;i<2;i++){
+    const name=str(teams[i]||'Team '+(i+1)),sc=findInning(scores,name,i);
+    const section=element('section','cricket-innings');
+    const head=element('div','cricket-innings-head');
+    head.appendChild(element('span','',name));
+    head.appendChild(element('span','',sc?`${sc.r??0}/${sc.w??0} (${sc.o??0} ov)`:'अभी बल्लेबाजी नहीं'));
+    section.appendChild(head);
+    const grid=element('div','cricket-overs');
+    const currentBalls=sc?oversToBalls(sc.o):null;
+    const inningKey=mk+'|'+str(sc?.inning||name);
+    if(!snapshots[inningKey])snapshots[inningKey]={};
+    for(const over of milestones){
+     const cell=element('div','cricket-over');cell.appendChild(element('b','',over+' OVER'));
+     // Exact score only when feed reports exactly N completed overs.
+     if(sc&&currentBalls===over*6&&!snapshots[inningKey][over]){
+       snapshots[inningKey][over]=`${sc.r??0}/${sc.w??0}`;changed=true;
+     }
+     const saved=snapshots[inningKey][over];
+     const pending=currentBalls===null||currentBalls<over*6;
+     if(saved){cell.appendChild(element('strong','',saved));cell.appendChild(element('small','','रन / विकेट'))}
+     else{cell.classList.add('missing');cell.appendChild(element('strong','',pending?'Pending':'N/A'));cell.appendChild(element('small','',pending?'ओवर बाकी':'डेटा उपलब्ध नहीं'))}
+     grid.appendChild(cell);
     }
+    section.appendChild(grid);box.appendChild(section);
+   }
+   box.appendChild(element('div','cricket-match-status',str(m.status||'Score updating')));
+   list.appendChild(box);
   }
-  let loading=false;
-  async function refresh(){
-    if(loading)return;
-    loading=true;button.disabled=true;status.textContent='लाइव स्कोर अपडेट हो रहे हैं…';
-    try{
-      const controller=new AbortController();
-      const timer=setTimeout(()=>controller.abort(),12000);
-      let response;
-      try{response=await fetch(endpoint,{signal:controller.signal,cache:'default'})}
-      finally{clearTimeout(timer)}
-      if(!response.ok)throw new Error('HTTP '+response.status);
-      const json=await response.json();
-      const matches=Array.isArray(json)?json:Array.isArray(json.matches)?json.matches:Array.isArray(json.data)?json.data:Array.isArray(json.data?.matches)?json.data.matches:[];
-      if(json.error&&!matches.length)throw new Error(text(json.error));
-      const live=matches.filter(m=>m.matchStarted===true&&m.matchEnded!==true);
-      render(live);
-      status.textContent='लाइव मैच • अंतिम अपडेट: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-    }catch(err){
-      status.textContent='स्कोर लोड नहीं हो सके। Worker कनेक्शन या API quota जाँचें।';
-      list.textContent='Refresh दबाकर दोबारा कोशिश करें।';
-      console.warn('Cricket score:',err);
-    }finally{loading=false;button.disabled=false}
-  }
-  button.addEventListener('click',refresh);
-  refresh();
-  setInterval(()=>{if(!document.hidden)refresh()},5*60*1000);
-  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
+  if(changed){try{localStorage.setItem(key,JSON.stringify(snapshots))}catch(e){console.warn('Snapshot storage unavailable',e)}}
+  list.appendChild(element('div','cricket-disclaimer','6/10/15/20 ओवर के पुराने स्कोर तभी दिखेंगे जब सटीक डेटा उपलब्ध हो। N/A का मतलब स्कोर उपलब्ध नहीं है, अनुमान नहीं लगाया गया।'));
+ }
+ let loading=false;
+ async function refresh(){
+  if(loading)return;loading=true;button.disabled=true;status.textContent='T20 स्कोर अपडेट हो रहे हैं…';
+  try{
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   let response;try{response=await fetch(endpoint,{signal:controller.signal})}finally{clearTimeout(timer)}
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const json=await response.json(),all=getMatches(json);
+   if(json.error&&!all.length)throw Error(str(json.error));
+   const t20=all.filter(isT20).filter(m=>m.matchStarted===true&&m.matchEnded!==true);
+   render(t20);
+   status.textContent='T20 लाइव मैच • अंतिम अपडेट: '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  }catch(err){status.textContent='स्कोर लोड नहीं हो सके। API कनेक्शन जाँचें।';list.textContent='Refresh दबाकर दोबारा कोशिश करें।';console.warn('T20 cricket',err)}
+  finally{loading=false;button.disabled=false}
+ }
+ button.addEventListener('click',refresh);refresh();
+ setInterval(()=>{if(!document.hidden)refresh()},5*60*1000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh()});
 })();
 </script>
 </body></html>

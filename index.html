@@ -501,6 +501,20 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
  function element(tag,cls,value){const e=document.createElement(tag);if(cls)e.className=cls;if(value!==undefined)e.textContent=value;return e}
  function getMatches(json){return Array.isArray(json)?json:Array.isArray(json.matches)?json.matches:Array.isArray(json.data)?json.data:Array.isArray(json.data?.matches)?json.data.matches:[]}
  function isT20(m){return /t20/i.test(str(m.matchType))||/t20/i.test(str(m.name))}
+ // Some API records say matchStarted=true long after a game ended.
+ // Reject clearly old/future and completed matches rather than displaying them as LIVE.
+ function isCurrentlyPlaying(m){
+  if(m.matchStarted!==true||m.matchEnded===true)return false;
+  const state=str(m.status).toLowerCase();
+  if(/won by|match ended|match over|abandoned|cancelled|canceled|no result|stumps|drawn|result declared/.test(state))return false;
+  const raw=m.dateTimeGMT||m.date;
+  if(!raw)return false; // Cannot verify recency; do not label LIVE.
+  const date=new Date(/Z$|[+-]\d\d:?\d\d$/.test(str(raw))?raw:str(raw).replace(' ','T')+'Z');
+  if(!Number.isFinite(date.getTime()))return false;
+  const elapsed=Date.now()-date.getTime();
+  // T20 matches normally conclude within hours; allow a generous 12-hour window.
+  return elapsed>=-3*60*60*1000&&elapsed<=12*60*60*1000;
+ }
  function scoreInnings(m){return Array.isArray(m.score)?m.score:[]}
  function names(m){return Array.isArray(m.teams)?m.teams:Array.isArray(m.teamInfo)?m.teamInfo.map(t=>t.name):[]}
  function matchKey(m){return str(m.id||m.matchId||m.name)+'|'+str(m.date||m.dateTimeGMT||'')}
@@ -541,7 +555,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
  }
  function render(matches,root){
   list.replaceChildren();
-  if(!matches.length){list.appendChild(element('div','cricket-empty','अभी कोई लाइव T20 मैच उपलब्ध नहीं है।'));return}
+  if(!matches.length){list.appendChild(element('div','cricket-empty','अभी कोई चालू T20 मैच नहीं मिला। नया मैच शुरू होने पर यहाँ स्कोर दिखेगा।'));return}
   let changed=false;
   for(const m of matches.slice(0,8)){
    const box=element('article','cricket-match');
@@ -588,11 +602,11 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now(
    if(!response.ok)throw Error('HTTP '+response.status);
    const json=await response.json(),all=getMatches(json);
    if(json.error&&!all.length)throw Error(str(json.error));
-   const t20=all.filter(isT20).filter(m=>m.matchStarted===true&&m.matchEnded!==true);
+   const t20=all.filter(isT20).filter(isCurrentlyPlaying);
    render(t20,json);
    const updated=json.updatedAt?new Date(json.updatedAt):new Date();
    const valid=Number.isFinite(updated.getTime());
-   status.textContent='T20 लाइव मैच • डेटा अपडेट: '+(valid?updated:new Date()).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'});
+   status.textContent=(t20.length?'T20 मैच (API के अनुसार)':'अभी कोई चालू T20 मैच नहीं मिला')+' • डेटा जाँच: '+(valid?updated:new Date()).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',timeZone:'Asia/Kolkata'});
   }catch(err){status.textContent='स्कोर लोड नहीं हो सके। API कनेक्शन जाँचें।';list.textContent='Refresh दबाकर दोबारा कोशिश करें।';console.warn('T20 cricket',err)}
   finally{loading=false;button.disabled=false}
  }

@@ -5,7 +5,15 @@
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
 import {getFirestore,collection,doc,getDoc,getDocs,query,orderBy,limit,runTransaction,setDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
-const firebaseConfig={apiKey:'AIzaSyBrhG_hJeFqtXOroOHI7C9OLdjd2T4ahsY',authDomain:'lucky-lottery-1d174.firebaseapp.com',projectId:'lucky-lottery-1d174',storageBucket:'lucky-lottery-1d174.firebasestorage.app',messagingSenderId:'124480241873',appId:'1:124480241873:web:4b2592767e7186dc3f05f0',measurementId:'G-TN1P1PKJJ'};
+const firebaseConfig = {
+  apiKey: "AIzaSyBrhG_hJeFqtXOro0HI7C9OLdjd2T4ahsY",
+  authDomain: "lucky-lottery-1d174.firebaseapp.com",
+  projectId: "lucky-lottery-1d174",
+  storageBucket: "lucky-lottery-1d174.firebasestorage.app",
+  messagingSenderId: "124480241873",
+  appId: "1:124480241873:web:4b2592767e7186dc3f05f0",
+  measurementId: "G-TN1P1PTKJJ"
+};
 const ADMIN_UID='G88cofmUeuMxAU8zXVOeoKyjx8n1';
 const app=initializeApp(firebaseConfig);const auth=getAuth(app),db=getFirestore(app);const $=id=>document.getElementById(id);let selected='';let busy=false;
 function status(msg,error=false){$('status').textContent=msg;$('status').className=error?'error':'ok'}

@@ -1,17 +1,61 @@
 <!DOCTYPE html>
 <html lang="hi"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Lucky Lottery - Admin Wallet</title><style>
 :root{--bg:#170909;--panel:#301716;--panel2:#42201d;--gold:#ffda58;--muted:#d9bdb7;--line:#80513b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#6c1f16 0,#230b0a 45%,#130808 100%);color:#fff;font:16px system-ui,-apple-system,sans-serif;min-height:100vh}.wrap{max-width:1050px;margin:auto;padding:18px 14px 70px}.brand{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:18px}.brand h1{font-size:clamp(24px,5vw,35px);margin:0;color:var(--gold);letter-spacing:.5px}.brand p{margin:6px 0;color:var(--muted);font-size:13px}.pill{font-size:12px;border:1px solid #c99b54;color:var(--gold);padding:7px 10px;border-radius:99px;white-space:nowrap}.card{background:linear-gradient(145deg,#43201e,#281312);border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:15px;box-shadow:0 12px 30px #0003}.card h2{font-size:19px;margin:0 0 10px;color:#ffe9a3}.muted{color:var(--muted);font-size:13px;line-height:1.55}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.hidden{display:none!important}label{display:block;margin:14px 0 7px;color:#ffe8d5;font-size:14px;font-weight:650}input,select{width:100%;background:#190c0b;color:#fff;border:1px solid #9c6c5b;border-radius:12px;padding:14px 12px;font:inherit;min-height:48px}input:focus,select:focus{outline:2px solid var(--gold);outline-offset:1px}button{border:0;border-radius:12px;padding:13px 17px;min-height:46px;background:var(--gold);color:#2b1109;font-size:15px;font-weight:800;cursor:pointer}button:disabled{opacity:.5}button.secondary{background:#69443b;color:#fff;border:1px solid #ad7861}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:#231210;border:1px solid #825443;border-radius:15px;padding:15px;min-width:0;color:#e8cfc1;font-size:13px}.stat strong{display:block;color:var(--gold);font-size:clamp(22px,4vw,30px);margin:6px 0;overflow-wrap:anywhere}.stat small{display:block;font-size:11px;color:var(--muted)}.item{padding:13px 0;border-bottom:1px solid #6b443a;overflow-wrap:anywhere;font-size:13px}.error,.ok{border-radius:12px;padding:12px 15px;font-size:14px;overflow-wrap:anywhere}.error{color:#ffd3d3;background:#6e1d1d}.ok{color:#c8ffdc;background:#183d2c}.actionbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.actionbar button{flex:1}.step{color:#ffdd7a;font-size:12px;letter-spacing:.7px;font-weight:850;margin-bottom:8px}.hint{font-size:12px;color:#e7c7ae;margin-top:9px}.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:15px}.layout .card{margin-bottom:0}.full{grid-column:1/-1}#balances{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important}#login{max-width:490px;margin:32px auto}.foot{font-size:12px;text-align:center;color:#e0bca7;margin-top:20px}@media(max-width:680px){.layout{grid-template-columns:1fr}.full{grid-column:auto}.card{padding:17px}.brand{align-items:flex-start}.pill{font-size:10px}.summary{grid-template-columns:1fr 1fr}#balances{grid-template-columns:1fr 1fr}.stat{padding:12px}.stat strong{font-size:22px}}@media(max-width:350px){.brand{display:block}.pill{display:inline-block;margin-top:10px}}
+
+.client-directory{padding:0;overflow:hidden}
+.directory-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+.directory-heading h2{margin:0}
+.directory-actions{display:flex;flex-wrap:wrap;gap:8px}
+.directory-filters{display:grid;grid-template-columns:2fr 1fr;gap:12px;padding:0 20px 15px}
+.directory-table{overflow-x:auto}
+.directory-table table{width:100%;border-collapse:collapse;text-align:left}
+.directory-table th,.directory-table td{padding:12px 14px;border-top:1px solid var(--line)}
+.directory-table th{background:#251211;font-size:13px;color:#ffe9a3;white-space:nowrap}
+.directory-table td{font-size:14px}
+.directory-table tr[aria-current="true"] td{background:#573126}
+.directory-table .coin-value{text-align:right;font-variant-numeric:tabular-nums}
+.directory-table button{min-height:36px;font-size:13px;padding:7px 12px}
+.client-active{color:#b5eccb}
+.client-inactive{color:#ffc0b4}
+.client-form{margin-bottom:15px}
+.client-form summary{cursor:pointer;color:#ffe9a3;font-weight:750}
+.client-form h2{margin-top:18px}
+#walletDetails{scroll-margin-top:12px}
+#directoryCount{padding:0 20px}
+@media(max-width:600px){
+  .directory-heading{align-items:flex-start;flex-direction:column;padding:15px}
+  .directory-filters{padding:0 15px 12px}
+  .directory-table th,.directory-table td{padding:8px;font-size:12px}
+}
+.admin-nav{display:flex;gap:8px;margin-bottom:16px}
+.admin-nav button[aria-pressed="false"]{background:#69443b;color:#fff}
+.result-frame{display:block;width:100%;min-height:70vh;border:0;border-radius:12px;background:#231210}
 </style></head><body><main class="wrap"><header class="brand"><div><h1>★ LUCKY LOTTERY ★</h1><p>Admin Wallet • Fun Coins Management</p></div><span class="pill">🔒 Admin Only</span></header>
 <section class="card" id="login"><div class="step">सुरक्षित लॉगिन</div><h2>🔐 Admin Login</h2><label for="email">Admin Email</label><input autocomplete="username" id="email" placeholder="Email डालें" type="email"/><label for="password">Password</label><input autocomplete="current-password" id="password" placeholder="Password डालें" type="password"/><div style="margin-top:17px"><button id="loginBtn" style="width:100%">Login करें</button></div></section>
-<section class="hidden" id="panel"><div class="card"><div class="row"><div><div class="step">WALLET CONTROL CENTER</div><h2 style="margin-bottom:4px">👋 Admin Dashboard</h2><p class="muted" style="margin:0">मूल और Commission Coins का अलग-अलग हिसाब</p></div><button class="secondary" id="logoutBtn">Logout</button></div></div>
-<div class="layout"><section class="card"><div class="step">STEP 1</div><h2>👤 नया Client Wallet</h2><label for="createClientId">Client ID</label><input id="createClientId" autocomplete="off" maxlength="32" placeholder="जैसे CL001"/>
+<section class="hidden" id="panel"><div class="card"><div class="row"><div><h2 style="margin-bottom:4px">👋 Admin Dashboard</h2><p class="muted" style="margin:0">मूल और Commission Coins का अलग-अलग हिसाब</p></div><button class="secondary" id="logoutBtn">Logout</button></div></div>
+<nav class="admin-nav" aria-label="Admin काम">
+<button type="button" id="showClients" aria-pressed="true" aria-controls="walletView">क्लाइंट वॉलेट</button>
+<button type="button" id="showResults" aria-pressed="false" aria-controls="resultView">रिज़ल्ट डालें</button>
+</nav>
+<div id="walletView">
+<section class="card client-directory" aria-labelledby="directoryTitle">
+<div class="directory-heading"><h2 id="directoryTitle">Client List</h2><div class="directory-actions"><button id="openClientForm" type="button">+ नया Client</button><button class="secondary" id="refreshBtn" type="button">Refresh</button></div></div>
+<div class="directory-filters"><div><label for="clientSearch">Client खोजें</label><input id="clientSearch" type="search" placeholder="Client ID या Firebase UID"/></div><div><label for="clientStatusFilter">स्थिति</label><select id="clientStatusFilter"><option value="all">सभी</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div></div>
+<p id="directoryCount" class="muted" role="status"></p>
+<div class="directory-table" tabindex="0" role="region" aria-label="Client Wallet सूची"><table><thead><tr><th scope="col">Client ID</th><th scope="col">स्थिति</th><th scope="col" class="coin-value">मूल Coins</th><th scope="col" class="coin-value">कमीशन Coins</th><th scope="col">Wallet</th></tr></thead><tbody id="clientRows"></tbody></table></div>
+</section>
+<details class="card client-form" id="clientForm"><summary>नया Client Wallet</summary><label for="createClientId">Client ID</label><input id="createClientId" autocomplete="off" maxlength="32" placeholder="जैसे CL001"/>
 <label for="createClientPassword">Client Password</label><input id="createClientPassword" type="password" autocomplete="new-password" minlength="8"/>
 <button id="provisionBtn" style="width:100%;margin-top:13px">Client Login और Wallet बनाएँ</button>
-<p class="muted">पहले से बने Firebase खाते के लिए नीचे उसका UID डालें।</p><label for="newUid">Client Firebase UID</label><input autocomplete="off" id="newUid" placeholder="Firebase Authentication UID"/><button id="createBtn" style="width:100%;margin-top:13px">+ Zero Balance Wallet बनाएँ</button></section>
-<section class="card"><div class="step">STEP 2</div><h2>👥 Client चुनें</h2><p class="muted">किस Client का Wallet देखना या बदलना है?</p><label for="clients">Client Wallet</label><select id="clients"><option value="">Client चुनें</option></select><button class="secondary" id="refreshBtn" style="margin-top:12px">↻ Wallet List Refresh</button></section>
+<p class="muted">पहले से बने Firebase खाते के लिए नीचे उसका UID डालें।</p><label for="newUid">Client Firebase UID</label><input autocomplete="off" id="newUid" placeholder="Firebase Authentication UID"/><button id="createBtn" style="width:100%;margin-top:13px">+ Zero Balance Wallet बनाएँ</button></details>
+<div class="layout" id="walletDetails">
 <section class="card full"><div class="step">WALLET OVERVIEW</div><h2>🪙 Client Balance</h2><div id="balances"><div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div><div class="stat">Total Coins<strong>—</strong></div><div class="stat">Daily Growth<strong>—</strong><small>केवल अनुमान</small></div></div></section>
-<section class="card"><div class="step">STEP 3</div><h2>➕ Coins जोड़ें / निकालें</h2><label for="action">क्या करना है?</label><select id="action"><option value="principal_add">मूल Coins जोड़ें (+)</option><option value="principal_deduct">मूल Coins निकालें (−)</option><option value="commission_add">Commission Coins जोड़ें (+)</option><option value="commission_deduct">Commission Coins निकालें (−)</option></select><label for="amount">कितने Coins?</label><input id="amount" inputmode="numeric" min="1" placeholder="जैसे 1000" step="1" type="number"/><button id="saveBtn" style="width:100%;margin-top:15px">✓ Coins और History सेव करें</button><p class="hint">सेव करने से पहले Confirmation मिलेगा। Wallet और History साथ में अपडेट होंगे।</p></section>
-<section class="card"><div class="step">RECENT ACTIVITY</div><h2>📜 Transaction History</h2><p class="muted">चुने गए Client की सभी एंट्री</p><div class="muted" id="history">पहले Client चुनें</div></section></div></section>
+<section class="card"><h2>➕ Coins जोड़ें / निकालें</h2><label for="action">क्या करना है?</label><select id="action"><option value="principal_add">मूल Coins जोड़ें (+)</option><option value="principal_deduct">मूल Coins निकालें (−)</option><option value="commission_add">Commission Coins जोड़ें (+)</option><option value="commission_deduct">Commission Coins निकालें (−)</option></select><label for="amount">कितने Coins?</label><input id="amount" inputmode="numeric" min="1" placeholder="जैसे 1000" step="1" type="number"/><button id="saveBtn" style="width:100%;margin-top:15px">✓ Coins और History सेव करें</button><p class="hint">सेव करने से पहले Confirmation मिलेगा। Wallet और History साथ में अपडेट होंगे।</p></section>
+<section class="card"><div class="step">RECENT ACTIVITY</div><h2>📜 Transaction History</h2><p class="muted">चुने गए Client की सभी एंट्री</p><div class="muted" id="history">Client List से Wallet खोलें</div></section></div></div>
+<section class="hidden" id="resultView" aria-label="Result Admin">
+<iframe id="resultFrame" class="result-frame" title="Lucky Lottery Result Admin"></iframe>
+</section>
+</section>
 <p aria-live="polite" class="muted" id="status" role="status"></p><p class="foot">केवल Virtual Fun Coins • कोई वास्तविक पैसा, जमा या नकद निकासी नहीं</p></main><script type="module">
 import {initializeApp,deleteApp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,createUserWithEmailAndPassword,deleteUser,initializeAuth,inMemoryPersistence} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
@@ -32,9 +76,79 @@ function admin(){return auth.currentUser?.uid===ADMIN_UID}
 function requireAdmin(){if(!admin())throw Error('Admin access required')}
 function setBusy(v){busy=v;for(const id of ['saveBtn','createBtn','refreshBtn','provisionBtn'])$(id).disabled=v}
 function number(n){return Number(n||0).toLocaleString('en-IN')}
-onAuthStateChanged(auth,u=>{$('login').classList.toggle('hidden',!!u&&u.uid===ADMIN_UID);$('panel').classList.toggle('hidden',!u||u.uid!==ADMIN_UID);if(u&&u.uid===ADMIN_UID){status('Admin login सफल');refresh().catch(e=>status(e.message,true))}else if(u){status('इस खाते को Admin अनुमति नहीं है',true);signOut(auth)}});
+onAuthStateChanged(auth,u=>{if(u?.uid!==ADMIN_UID){changeAdminView(false);$('resultFrame').removeAttribute('src')}$('login').classList.toggle('hidden',!!u&&u.uid===ADMIN_UID);$('panel').classList.toggle('hidden',!u||u.uid!==ADMIN_UID);if(u&&u.uid===ADMIN_UID){status('Admin login सफल');refresh().catch(e=>status(e.message,true))}else if(u){status('इस खाते को Admin अनुमति नहीं है',true);signOut(auth)}});
 $('loginBtn').onclick=async()=>{try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);$('password').value=''}catch(e){status(e.message,true)}};
+function changeAdminView(showResults) {
+  $('walletView').classList.toggle('hidden', showResults);
+  $('resultView').classList.toggle('hidden', !showResults);
+  $('showClients').setAttribute('aria-pressed', String(!showResults));
+  $('showResults').setAttribute('aria-pressed', String(showResults));
+  if (showResults && !$('resultFrame').hasAttribute('src')) {
+    $('resultFrame').src = './admin.html';
+  }
+}
+$('showClients').onclick = () => changeAdminView(false);
+$('showResults').onclick = () => {
+  if (admin()) changeAdminView(true);
+};
 $('logoutBtn').onclick=()=>signOut(auth);
+let directoryClients = [];
+
+function renderClientList() {
+  const search = $('clientSearch').value.trim().toUpperCase();
+  const filter = $('clientStatusFilter').value;
+  const clients = directoryClients.filter(client => {
+    const matchesSearch = client.label.toUpperCase().includes(search) || client.uid.toUpperCase().includes(search);
+    return matchesSearch && (filter === 'all' || client.active === (filter === 'active'));
+  });
+  $('directoryCount').textContent = clients.length + ' / ' + directoryClients.length + ' Clients';
+  const body = $('clientRows');
+  body.replaceChildren();
+  if (!clients.length) {
+    const row = body.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 5;
+    cell.textContent = 'कोई Client नहीं मिला।';
+    return;
+  }
+  for (const client of clients) {
+    const row = body.insertRow();
+    if (client.uid === selected) row.setAttribute('aria-current', 'true');
+    row.insertCell().textContent = client.label;
+    const state = row.insertCell();
+    state.textContent = client.active ? 'Active' : 'Inactive';
+    state.className = client.active ? 'client-active' : 'client-inactive';
+    for (const balance of [client.principalCoins, client.commissionCoins]) {
+      const cell = row.insertCell();
+      cell.className = 'coin-value';
+      cell.textContent = number(balance);
+    }
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'secondary';
+    button.textContent = 'खोलें';
+    button.setAttribute('aria-label', client.label + ' का Wallet खोलें');
+    button.onclick = async () => {
+      selected = client.uid;
+      renderClientList();
+      try {
+        await loadWallet();
+        $('walletDetails').scrollIntoView({block:'start'});
+      } catch (error) {
+        status(error.message, true);
+      }
+    };
+    row.insertCell().append(button);
+  }
+}
+
+$('openClientForm').onclick = () => {
+  $('clientForm').open = true;
+  $('createClientId').focus();
+};
+$('clientSearch').oninput = renderClientList;
+$('clientStatusFilter').onchange = renderClientList;
+
 async function refresh() {
   requireAdmin();
   const wallets = await getDocs(collection(db, 'walletClients'));
@@ -46,11 +160,13 @@ async function refresh() {
   } catch (error) {
     listWarning = ' • Client IDs नहीं पढ़ सके: ' + (error.code || error.message);
   }
-  const dropdown = $('clients');
-  dropdown.replaceChildren(new Option('Client चुनें', ''));
-  wallets.forEach(wallet => dropdown.add(new Option(clientIds.get(wallet.id) || wallet.id, wallet.id)));
-  selected = wallets.docs.some(wallet => wallet.id === selected) ? selected : '';
-  dropdown.value = selected;
+  directoryClients = wallets.docs.map(wallet => ({
+    uid: wallet.id,
+    label: clientIds.get(wallet.id) || wallet.id,
+    ...wallet.data()
+  })).sort((first, second) => first.label.localeCompare(second.label, 'en', {numeric:true}));
+  if (!directoryClients.some(client => client.uid === selected)) selected = '';
+  renderClientList();
   await loadWallet();
   status(wallets.size + ' Wallet मिले' + listWarning, !!listWarning);
 }
@@ -114,8 +230,7 @@ $('provisionBtn').onclick = async () => {
     }
   }
 };
-$('clients').onchange=()=>{selected=$('clients').value;loadWallet().catch(e=>status(e.message,true))};
-async function loadWallet(){requireAdmin();if(!selected){$('balances').innerHTML='<div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div>'; $('history').textContent='Client चुनें';return}const snap=await getDoc(doc(db,'walletClients',selected));if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();$('balances').innerHTML='<div class="stat">मूल Coins<strong>'+number(w.principalCoins)+'</strong></div><div class="stat">Commission Coins<strong>'+number(w.commissionCoins)+'</strong></div><div class="stat">Total Coins<strong>'+number(w.principalCoins+w.commissionCoins)+'</strong></div><div class="stat">Daily Simple Growth (30-day basis)<strong>'+number(w.principalCoins*0.06/30)+'</strong><small>केवल अनुमान, Auto Credit नहीं</small></div>';
-const tx=await getDocs(query(collection(db,'walletClients',selected,'transactions'),orderBy('createdAt','desc')));const h=$('history');h.replaceChildren();if(tx.empty){h.textContent='अभी कोई Transaction नहीं';return}tx.forEach(d=>{const t=d.data();const el=document.createElement('div');el.className='item';el.textContent=t.type+' • '+number(t.amount)+' Coins • '+(t.createdAt?.toDate?.().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})||'Pending');h.append(el)})}
+async function loadWallet(){requireAdmin();const uid=selected;if(!uid){$('balances').innerHTML='<div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div>'; $('history').textContent='Client चुनें';return}const snap=await getDoc(doc(db,'walletClients',uid));if(uid!==selected)return;if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();const directoryClient=directoryClients.find(client=>client.uid===snap.id);if(directoryClient){Object.assign(directoryClient,w);renderClientList()}$('balances').innerHTML='<div class="stat">मूल Coins<strong>'+number(w.principalCoins)+'</strong></div><div class="stat">Commission Coins<strong>'+number(w.commissionCoins)+'</strong></div><div class="stat">Total Coins<strong>'+number(w.principalCoins+w.commissionCoins)+'</strong></div><div class="stat">Daily Simple Growth (30-day basis)<strong>'+number(w.principalCoins*0.06/30)+'</strong><small>केवल अनुमान, Auto Credit नहीं</small></div>';
+const tx=await getDocs(query(collection(db,'walletClients',uid,'transactions'),orderBy('createdAt','desc')));if(uid!==selected)return;const h=$('history');h.replaceChildren();if(tx.empty){h.textContent='अभी कोई Transaction नहीं';return}tx.forEach(d=>{const t=d.data();const el=document.createElement('div');el.className='item';el.textContent=t.type+' • '+number(t.amount)+' Coins • '+(t.createdAt?.toDate?.().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})||'Pending');h.append(el)})}
 $('saveBtn').onclick=async()=>{if(busy)return;const uid=selected,type=$('action').value,amount=Number($('amount').value);if(!uid||!Number.isSafeInteger(amount)||amount<=0){status('Client चुनें और सही Coins Amount डालें',true);return}if(!confirm(uid+' के Wallet में '+type+' : '+amount+' Coins?'))return;setBusy(true);try{requireAdmin();const walletRef=doc(db,'walletClients',uid);const txRef=doc(collection(db,'walletClients',uid,'transactions'));await runTransaction(db,async tx=>{const snap=await tx.get(walletRef);if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();if(!w.active)throw Error('Wallet inactive है');const field=type.startsWith('principal')?'principalCoins':'commissionCoins';const delta=type.endsWith('deduct')?-amount:amount;const next=w[field]+delta;if(!Number.isSafeInteger(next)||next<0)throw Error('अपर्याप्त Coins या सीमा से अधिक');tx.update(walletRef,{[field]:next,lastTransactionId:txRef.id});tx.set(txRef,{type,amount,createdAt:serverTimestamp()})});$('amount').value='';status('Coins और Transaction History दोनों सेव हुए');await loadWallet()}catch(e){status(e.message,true)}finally{setBusy(false)}};
 </script></body></html>

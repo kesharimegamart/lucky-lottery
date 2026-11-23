@@ -30,6 +30,16 @@
 .admin-nav{display:flex;gap:8px;margin-bottom:16px}
 .admin-nav button[aria-pressed="false"]{background:#69443b;color:#fff}
 .result-frame{display:block;width:100%;min-height:70vh;border:0;border-radius:12px;background:#231210}
+
+.directory-table th,.directory-table td{padding:8px 10px}
+.directory-table td:first-child{white-space:nowrap;font-weight:700}
+.row-actions{white-space:nowrap}
+.directory-table .row-actions button{padding:6px 8px;min-height:36px;margin:2px;font-size:12px}
+.directory-table .row-actions .withdrawal{background:#69443b;color:#fff}
+#walletDetails{width:min(560px,calc(100% - 24px));max-height:85dvh;overflow:auto;background:#301716;color:#fff;border:1px solid #ad7861;border-radius:18px;padding:16px}
+#walletDetails::backdrop{background:#000a}
+#walletDetails .card{margin:12px 0 0}
+#walletDialogTitle{margin:0;color:var(--gold)}
 </style></head><body><main class="wrap"><header class="brand"><div><h1>★ LUCKY LOTTERY ★</h1><p>Admin Wallet • Fun Coins Management</p></div><span class="pill">🔒 Admin Only</span></header>
 <section class="card" id="login"><div class="step">सुरक्षित लॉगिन</div><h2>🔐 Admin Login</h2><label for="email">Admin Email</label><input autocomplete="username" id="email" placeholder="Email डालें" type="email"/><label for="password">Password</label><input autocomplete="current-password" id="password" placeholder="Password डालें" type="password"/><div style="margin-top:17px"><button id="loginBtn" style="width:100%">Login करें</button></div></section>
 <section class="hidden" id="panel"><div class="card"><div class="row"><div><h2 style="margin-bottom:4px">👋 Admin Dashboard</h2><p class="muted" style="margin:0">मूल और Commission Coins का अलग-अलग हिसाब</p></div><button class="secondary" id="logoutBtn">Logout</button></div></div>
@@ -38,20 +48,29 @@
 <button type="button" id="showResults" aria-pressed="false" aria-controls="resultView">रिज़ल्ट डालें</button>
 </nav>
 <div id="walletView">
+<details class="card" id="commissionSettings"><summary>कमीशन दर सेट करें</summary>
+<p class="muted" id="commissionCurrent"></p>
+<label for="commissionRate">मासिक दर (%)</label><input id="commissionRate" type="number" min="0" max="100" step="0.01" inputmode="decimal"/>
+<label for="commissionDate">किस तारीख से लागू करें (IST)</label><input id="commissionDate" type="date"/>
+<button id="saveCommissionRate" type="button">दर सेव करें</button>
+<p class="muted" id="commissionMessage" role="status"></p>
+</details>
 <section class="card client-directory" aria-labelledby="directoryTitle">
 <div class="directory-heading"><h2 id="directoryTitle">Client List</h2><div class="directory-actions"><button id="openClientForm" type="button">+ नया Client</button><button class="secondary" id="refreshBtn" type="button">Refresh</button></div></div>
 <div class="directory-filters"><div><label for="clientSearch">Client खोजें</label><input id="clientSearch" type="search" placeholder="Client ID या Firebase UID"/></div><div><label for="clientStatusFilter">स्थिति</label><select id="clientStatusFilter"><option value="all">सभी</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div></div>
 <p id="directoryCount" class="muted" role="status"></p>
-<div class="directory-table" tabindex="0" role="region" aria-label="Client Wallet सूची"><table><thead><tr><th scope="col">Client ID</th><th scope="col">स्थिति</th><th scope="col" class="coin-value">मूल Coins</th><th scope="col" class="coin-value">कमीशन Coins</th><th scope="col">Wallet</th></tr></thead><tbody id="clientRows"></tbody></table></div>
+<div class="directory-table" tabindex="0" role="region" aria-label="Client Wallet सूची"><table><thead><tr><th scope="col">Client ID</th><th scope="col">स्थिति</th><th scope="col" class="coin-value">मूल Coins</th><th scope="col" class="coin-value">कमीशन Coins</th><th scope="col">मूल Coins कार्रवाई</th><th scope="col">कमीशन कार्रवाई</th><th scope="col">History</th></tr></thead><tbody id="clientRows"></tbody></table></div>
 </section>
 <details class="card client-form" id="clientForm"><summary>नया Client Wallet</summary><label for="createClientId">Client ID</label><input id="createClientId" autocomplete="off" maxlength="32" placeholder="जैसे CL001"/>
 <label for="createClientPassword">Client Password</label><input id="createClientPassword" type="password" autocomplete="new-password" minlength="8"/>
 <button id="provisionBtn" style="width:100%;margin-top:13px">Client Login और Wallet बनाएँ</button>
 <p class="muted">पहले से बने Firebase खाते के लिए नीचे उसका UID डालें।</p><label for="newUid">Client Firebase UID</label><input autocomplete="off" id="newUid" placeholder="Firebase Authentication UID"/><button id="createBtn" style="width:100%;margin-top:13px">+ Zero Balance Wallet बनाएँ</button></details>
-<div class="layout" id="walletDetails">
+<dialog id="walletDetails" aria-labelledby="walletDialogTitle">
+<div class="row"><h2 id="walletDialogTitle"></h2><button type="button" id="closeWalletDialog" class="secondary">बंद करें</button></div>
+<p id="walletDialogStatus" class="muted" role="status"></p>
 <section class="card full"><div class="step">WALLET OVERVIEW</div><h2>🪙 Client Balance</h2><div id="balances"><div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div><div class="stat">Total Coins<strong>—</strong></div><div class="stat">Daily Growth<strong>—</strong><small>केवल अनुमान</small></div></div></section>
-<section class="card"><h2>➕ Coins जोड़ें / निकालें</h2><label for="action">क्या करना है?</label><select id="action"><option value="principal_add">मूल Coins जोड़ें (+)</option><option value="principal_deduct">मूल Coins निकालें (−)</option><option value="commission_add">Commission Coins जोड़ें (+)</option><option value="commission_deduct">Commission Coins निकालें (−)</option></select><label for="amount">कितने Coins?</label><input id="amount" inputmode="numeric" min="1" placeholder="जैसे 1000" step="1" type="number"/><button id="saveBtn" style="width:100%;margin-top:15px">✓ Coins और History सेव करें</button><p class="hint">सेव करने से पहले Confirmation मिलेगा। Wallet और History साथ में अपडेट होंगे।</p></section>
-<section class="card"><div class="step">RECENT ACTIVITY</div><h2>📜 Transaction History</h2><p class="muted">चुने गए Client की सभी एंट्री</p><div class="muted" id="history">Client List से Wallet खोलें</div></section></div></div>
+<section class="card" id="walletActionPanel"><select id="action" hidden><option value="principal_add">मूल Coins जोड़ें (+)</option><option value="principal_deduct">मूल Coins निकालें (−)</option><option value="commission_add">Commission Coins जोड़ें (+)</option><option value="commission_deduct">Commission Coins निकालें (−)</option></select><label for="amount">कितने Coins?</label><input id="amount" inputmode="numeric" min="1" placeholder="जैसे 1000" step="1" type="number"/><button id="saveBtn" style="width:100%;margin-top:15px">✓ Coins और History सेव करें</button><p class="hint">सेव करने से पहले Confirmation मिलेगा। Wallet और History साथ में अपडेट होंगे।</p></section>
+<section class="card" id="walletHistoryPanel"><h2>Transaction History</h2><p class="muted">चुने गए Client की सभी एंट्री</p><div class="muted" id="history">Client List से Wallet खोलें</div><button type="button" id="loadOlderWallet" class="secondary hidden">पुरानी एंट्री देखें</button></section></dialog></div>
 <section class="hidden" id="resultView" aria-label="Result Admin">
 <iframe id="resultFrame" class="result-frame" title="Lucky Lottery Result Admin"></iframe>
 </section>
@@ -59,7 +78,7 @@
 <p aria-live="polite" class="muted" id="status" role="status"></p><p class="foot">केवल Virtual Fun Coins • कोई वास्तविक पैसा, जमा या नकद निकासी नहीं</p></main><script type="module">
 import {initializeApp,deleteApp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,createUserWithEmailAndPassword,deleteUser,initializeAuth,inMemoryPersistence} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
-import {getFirestore,collection,doc,getDoc,getDocs,query,orderBy,limit,runTransaction,setDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
+import {getFirestore,collection,doc,getDoc,getDocs,query,orderBy,limit,startAfter,runTransaction,setDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
 const firebaseConfig = {
   apiKey: "AIzaSyBrhG_hJeFqtXOro0HI7C9OLdjd2T4ahsY",
   authDomain: "lucky-lottery-1d174.firebaseapp.com",
@@ -71,12 +90,12 @@ const firebaseConfig = {
 };
 const ADMIN_UID='G88cofmUeuMxAU8zXVOeoKyjx8n1';
 const app=initializeApp(firebaseConfig);const auth=getAuth(app),db=getFirestore(app);const $=id=>document.getElementById(id);let selected='';let busy=false;
-function status(msg,error=false){$('status').textContent=msg;$('status').className=error?'error':'ok'}
+function status(msg,error=false){for(const id of ['status','walletDialogStatus']){$(id).textContent=msg;$(id).className=error?'error':'ok'}}
 function admin(){return auth.currentUser?.uid===ADMIN_UID}
 function requireAdmin(){if(!admin())throw Error('Admin access required')}
 function setBusy(v){busy=v;for(const id of ['saveBtn','createBtn','refreshBtn','provisionBtn'])$(id).disabled=v}
 function number(n){return Number(n||0).toLocaleString('en-IN')}
-onAuthStateChanged(auth,u=>{if(u?.uid!==ADMIN_UID){changeAdminView(false);$('resultFrame').removeAttribute('src')}$('login').classList.toggle('hidden',!!u&&u.uid===ADMIN_UID);$('panel').classList.toggle('hidden',!u||u.uid!==ADMIN_UID);if(u&&u.uid===ADMIN_UID){status('Admin login सफल');refresh().catch(e=>status(e.message,true))}else if(u){status('इस खाते को Admin अनुमति नहीं है',true);signOut(auth)}});
+onAuthStateChanged(auth,u=>{if(u?.uid!==ADMIN_UID){if(walletDialog.open)walletDialog.close();changeAdminView(false);$('resultFrame').removeAttribute('src')}$('login').classList.toggle('hidden',!!u&&u.uid===ADMIN_UID);$('panel').classList.toggle('hidden',!u||u.uid!==ADMIN_UID);if(u&&u.uid===ADMIN_UID){status('Admin login सफल');refresh().catch(e=>status(e.message,true))}else if(u){status('इस खाते को Admin अनुमति नहीं है',true);signOut(auth)}});
 $('loginBtn').onclick=async()=>{try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);$('password').value=''}catch(e){status(e.message,true)}};
 function changeAdminView(showResults) {
   $('walletView').classList.toggle('hidden', showResults);
@@ -93,6 +112,88 @@ $('showResults').onclick = () => {
 };
 $('logoutBtn').onclick=()=>signOut(auth);
 let directoryClients = [];
+const commissionDoc = doc(db, 'settings', 'walletCommissionRates');
+const commissionSettings = $('commissionSettings');
+function istDay(offset = 0) {
+  return new Date(Date.now() + 19800000 + offset * 86400000).toISOString().slice(0, 10);
+}
+function activeRate(schedule, day) {
+  return schedule.filter(change => change.date <= day).at(-1)?.basisPoints ?? 600;
+}
+let loadedRates = false;
+commissionSettings.ontoggle = async () => {
+  if (!commissionSettings.open || loadedRates || !admin()) return;
+  $('commissionDate').min = istDay(1);
+  $('commissionDate').value = istDay(1);
+  try {
+    const schedule = (await getDoc(commissionDoc)).data()?.schedule ?? [];
+    $('commissionCurrent').textContent = 'आज की दर: ' + activeRate(schedule, istDay()) / 100 + '% मासिक';
+    $('commissionMessage').textContent = schedule.filter(change => change.date > istDay())
+      .map(change => change.date + ' से ' + change.basisPoints / 100 + '%').join(' • ');
+    loadedRates = true;
+  } catch (error) {
+    $('commissionMessage').textContent = error.message;
+  }
+};
+$('saveCommissionRate').onclick = async () => {
+  const button = $('saveCommissionRate');
+  const rate = $('commissionRate').value;
+  const date = $('commissionDate').value;
+  const basisPoints = Math.round(Number(rate) * 100);
+  if (!admin() || button.disabled) return;
+  if (!/^\d+(?:\.\d{1,2})?$/.test(rate) || basisPoints > 10000 || !date || date < istDay(1)) {
+    $('commissionMessage').textContent = '0 से 100 के बीच दर और कल या उसके बाद की तारीख चुनें।';
+    return;
+  }
+  button.disabled = true;
+  try {
+    const schedule = await runTransaction(db, async tx => {
+      const previous = (await tx.get(commissionDoc)).data()?.schedule ?? [];
+      const next = previous.filter(change => change.date !== date);
+      next.push({date, basisPoints});
+      next.sort((first, second) => first.date.localeCompare(second.date));
+      tx.set(commissionDoc, {schedule: next});
+      return next;
+    });
+    const upcoming = schedule.filter(change => change.date > istDay())
+      .map(change => change.date + ' से ' + change.basisPoints / 100 + '%').join(' • ');
+    $('commissionMessage').textContent = 'सेव हो गया। ' + upcoming;
+  } catch (error) {
+    $('commissionMessage').textContent = error.message;
+  } finally {
+    button.disabled = false;
+  }
+};
+
+
+const walletDialog = $('walletDetails');
+async function openWalletAction(client, action, label) {
+    if (busy || !admin() || walletDialog.open) return;
+    if (!client.active && action !== 'history') return;
+    selected = client.uid;
+    const historyOnly = action === 'history';
+    $('walletDialogTitle').textContent = client.label + ' · ' + label;
+    $('walletDialogStatus').textContent = 'Wallet लोड हो रहा है…';
+    $('walletActionPanel').hidden = historyOnly;
+    $('walletHistoryPanel').hidden = !historyOnly;
+    $('saveBtn').disabled = true;
+    $('history').textContent = 'History लोड हो रही है…';
+    if (!historyOnly) {
+      $('action').value = action;
+      $('amount').value = '';
+    }
+    walletDialog.showModal();
+    try {
+      await loadWallet();
+      if (historyOnly) await loadWalletHistory(true);
+      $('walletDialogStatus').textContent = '';
+      $('saveBtn').disabled = false;
+      if (!historyOnly && walletDialog.open) $('amount').focus();
+    } catch (error) {
+      status(error.message, true);
+    }
+}
+$('closeWalletDialog').onclick = () => walletDialog.close();
 
 function renderClientList() {
   const search = $('clientSearch').value.trim().toUpperCase();
@@ -107,7 +208,7 @@ function renderClientList() {
   if (!clients.length) {
     const row = body.insertRow();
     const cell = row.insertCell();
-    cell.colSpan = 5;
+    cell.colSpan = 7;
     cell.textContent = 'कोई Client नहीं मिला।';
     return;
   }
@@ -123,22 +224,25 @@ function renderClientList() {
       cell.className = 'coin-value';
       cell.textContent = number(balance);
     }
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'secondary';
-    button.textContent = 'खोलें';
-    button.setAttribute('aria-label', client.label + ' का Wallet खोलें');
-    button.onclick = async () => {
-      selected = client.uid;
-      renderClientList();
-      try {
-        await loadWallet();
-        $('walletDetails').scrollIntoView({block:'start'});
-      } catch (error) {
-        status(error.message, true);
+    const actions = [
+      [['principal_add', 'Deposit', 'मूल Deposit'], ['principal_deduct', 'Withdrawal', 'मूल Withdrawal']],
+      [['commission_add', 'Deposit', 'कमीशन Deposit'], ['commission_deduct', 'Withdrawal', 'कमीशन Withdrawal']],
+      [['history', 'History', 'History']]
+    ];
+    for (const group of actions) {
+      const cell = row.insertCell();
+      cell.className = 'row-actions';
+      for (const [action, caption, label] of group) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = caption;
+        button.setAttribute('aria-label', client.label + ' ' + label);
+        button.className = action === 'history' ? 'secondary' : action.endsWith('deduct') ? 'withdrawal' : '';
+        button.disabled = !client.active && action !== 'history';
+        button.onclick = () => openWalletAction(client, action, label);
+        cell.append(button);
       }
-    };
-    row.insertCell().append(button);
+    }
   }
 }
 
@@ -167,7 +271,6 @@ async function refresh() {
   })).sort((first, second) => first.label.localeCompare(second.label, 'en', {numeric:true}));
   if (!directoryClients.some(client => client.uid === selected)) selected = '';
   renderClientList();
-  await loadWallet();
   status(wallets.size + ' Wallet मिले' + listWarning, !!listWarning);
 }
 $('refreshBtn').onclick=()=>refresh().catch(e=>status(e.message,true));
@@ -230,7 +333,38 @@ $('provisionBtn').onclick = async () => {
     }
   }
 };
-async function loadWallet(){requireAdmin();const uid=selected;if(!uid){$('balances').innerHTML='<div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div>'; $('history').textContent='Client चुनें';return}const snap=await getDoc(doc(db,'walletClients',uid));if(uid!==selected)return;if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();const directoryClient=directoryClients.find(client=>client.uid===snap.id);if(directoryClient){Object.assign(directoryClient,w);renderClientList()}$('balances').innerHTML='<div class="stat">मूल Coins<strong>'+number(w.principalCoins)+'</strong></div><div class="stat">Commission Coins<strong>'+number(w.commissionCoins)+'</strong></div><div class="stat">Total Coins<strong>'+number(w.principalCoins+w.commissionCoins)+'</strong></div><div class="stat">Daily Simple Growth (30-day basis)<strong>'+number(w.principalCoins*0.06/30)+'</strong><small>केवल अनुमान, Auto Credit नहीं</small></div>';
-const tx=await getDocs(query(collection(db,'walletClients',uid,'transactions'),orderBy('createdAt','desc')));if(uid!==selected)return;const h=$('history');h.replaceChildren();if(tx.empty){h.textContent='अभी कोई Transaction नहीं';return}tx.forEach(d=>{const t=d.data();const el=document.createElement('div');el.className='item';el.textContent=t.type+' • '+number(t.amount)+' Coins • '+(t.createdAt?.toDate?.().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})||'Pending');h.append(el)})}
+async function loadWallet(){requireAdmin();const uid=selected;if(!uid){$('balances').innerHTML='<div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div>'; $('history').textContent='Client चुनें';return}const snap=await getDoc(doc(db,'walletClients',uid));if(uid!==selected)return;if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();const directoryClient=directoryClients.find(client=>client.uid===snap.id);if(directoryClient){Object.assign(directoryClient,w);renderClientList()}$('balances').innerHTML='<div class="stat">मूल Coins<strong>'+number(w.principalCoins)+'</strong></div><div class="stat">Commission Coins<strong>'+number(w.commissionCoins)+'</strong></div><div class="stat">Total Coins<strong>'+number(w.principalCoins+w.commissionCoins)+'</strong></div><div class="stat">कमीशन दर<strong>सेटिंग देखें</strong></div>';
+}
+let walletHistoryCursor = null;
+async function loadWalletHistory(reset) {
+  requireAdmin();
+  const uid = selected;
+  const button = $('loadOlderWallet');
+  if (!uid) return;
+  if (reset) walletHistoryCursor = null;
+  button.disabled = true;
+  try {
+    const clauses = [orderBy('createdAt', 'desc'), limit(25)];
+    if (walletHistoryCursor) clauses.push(startAfter(walletHistoryCursor));
+    const records = await getDocs(query(collection(db, 'walletClients', uid, 'transactions'), ...clauses));
+    if (uid !== selected) return;
+    if (reset) $('history').replaceChildren();
+    if (reset && records.empty) $('history').textContent = 'अभी कोई Transaction नहीं';
+    for (const record of records.docs) {
+      const entry = record.data();
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.textContent = entry.type + ' • ' + number(entry.amount) + ' Coins • ' +
+        (entry.createdAt?.toDate?.().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'}) || 'Pending');
+      $('history').append(item);
+    }
+    walletHistoryCursor = records.docs.at(-1) ?? walletHistoryCursor;
+    button.classList.toggle('hidden', records.size < 25);
+  } finally {
+    button.disabled = false;
+  }
+}
+$('loadOlderWallet').onclick = () => loadWalletHistory(false).catch(error => status(error.message, true));
+
 $('saveBtn').onclick=async()=>{if(busy)return;const uid=selected,type=$('action').value,amount=Number($('amount').value);if(!uid||!Number.isSafeInteger(amount)||amount<=0){status('Client चुनें और सही Coins Amount डालें',true);return}if(!confirm(uid+' के Wallet में '+type+' : '+amount+' Coins?'))return;setBusy(true);try{requireAdmin();const walletRef=doc(db,'walletClients',uid);const txRef=doc(collection(db,'walletClients',uid,'transactions'));await runTransaction(db,async tx=>{const snap=await tx.get(walletRef);if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();if(!w.active)throw Error('Wallet inactive है');const field=type.startsWith('principal')?'principalCoins':'commissionCoins';const delta=type.endsWith('deduct')?-amount:amount;const next=w[field]+delta;if(!Number.isSafeInteger(next)||next<0)throw Error('अपर्याप्त Coins या सीमा से अधिक');tx.update(walletRef,{[field]:next,lastTransactionId:txRef.id});tx.set(txRef,{type,amount,createdAt:serverTimestamp()})});$('amount').value='';status('Coins और Transaction History दोनों सेव हुए');await loadWallet()}catch(e){status(e.message,true)}finally{setBusy(false)}};
 </script></body></html>

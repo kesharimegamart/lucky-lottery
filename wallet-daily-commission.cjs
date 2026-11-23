@@ -3,7 +3,7 @@
 const DAY_MS = 86_400_000;
 const IST_MS = 19_800_000;
 const MONTH_DAY_LCM = 377580n;
-const FRACTION_DENOMINATOR = 50n * MONTH_DAY_LCM;
+const FRACTION_DENOMINATOR = 10000n * MONTH_DAY_LCM;
 
 function istDate(time) {
   return new Date(time + IST_MS).toISOString().slice(0, 10);
@@ -22,17 +22,28 @@ function wholeCoins(value) {
   return BigInt(value);
 }
 
-function dailyCredit(principal, date, carry) {
+function rateForDate(schedule, date) {
+  let rate = 600;
+  for (const change of schedule) {
+    if (change.date > date) break;
+    rate = change.basisPoints;
+  }
+  return rate;
+}
+
+function dailyCredit(principal, date, carry, basisPoints = 600) {
   const [year, month] = date.split('-').map(Number);
   const days = BigInt(new Date(Date.UTC(year, month, 0)).getUTCDate());
-  const units = wholeCoins(principal) * 3n * (MONTH_DAY_LCM / days) + wholeCoins(carry);
+  const units = wholeCoins(principal) * wholeCoins(basisPoints)
+    * (MONTH_DAY_LCM / days) + wholeCoins(carry);
+
   return {
     amount: Number(units / FRACTION_DENOMINATOR),
     carry: Number(units % FRACTION_DENOMINATOR)
   };
 }
 
-async function settleWallet(db, walletRef, startDate, today, serverTimestamp) {
+async function settleWallet(db, walletRef, startDate, today, serverTimestamp, schedule = []) {
   const stateRef = walletRef.collection('commissionState').doc('daily');
 
   for (;;) {
@@ -40,19 +51,22 @@ async function settleWallet(db, walletRef, startDate, today, serverTimestamp) {
       const wallet = await tx.get(walletRef);
       if (!wallet.exists) return false;
 
-      const state = (await tx.get(stateRef)).data();
-      if (state && state.startDate !== startDate) {
+      const state = await tx.get(stateRef);
+      const current = state.data();
+      if (current && current.startDate !== startDate) {
         throw Error('Commission start date differs from stored state');
       }
 
-      const date = state?.nextDate ?? startDate;
+      const date = current?.nextDate ?? startDate;
       if (date >= today) return false;
 
       const cutoff = midnight(date) + DAY_MS;
+      const nextDate = istDate(cutoff);
       const history = walletRef.collection('transactions');
       const creditRef = history.doc('daily_commission_' + date);
 
-      if ((await tx.get(creditRef)).exists) {
+      const existing = await tx.get(creditRef);
+      if (existing.exists) {
         throw Error('Commission transaction exists without matching cursor: ' + date);
       }
 
@@ -68,13 +82,16 @@ async function settleWallet(db, walletRef, startDate, today, serverTimestamp) {
         if (type === 'principal_deduct') principal += wholeCoins(entry.get('amount'));
       }
 
-      const {amount, carry} = dailyCredit(Number(principal), date, state?.carry ?? 0);
+      const carryForward = (current?.carry ?? 0) * (current?.carryVersion === 2 ? 1 : 200);
+      const {amount, carry} = dailyCredit(
+        Number(principal), date, carryForward, rateForDate(schedule, date)
+      );
 
       if (amount > 0) {
-        const balance = wholeCoins(wallet.get('commissionCoins')) + BigInt(amount);
-        wholeCoins(Number(balance));
+        const newBalance = wholeCoins(wallet.get('commissionCoins')) + BigInt(amount);
+        wholeCoins(Number(newBalance));
         tx.update(walletRef, {
-          commissionCoins: Number(balance),
+          commissionCoins: Number(newBalance),
           lastTransactionId: creditRef.id
         });
         tx.create(creditRef, {
@@ -84,10 +101,9 @@ async function settleWallet(db, walletRef, startDate, today, serverTimestamp) {
         });
       }
 
-      tx.set(stateRef, {startDate, nextDate: istDate(cutoff), carry});
+      tx.set(stateRef, {startDate, nextDate, carry, carryVersion: 2});
       return true;
     });
-
     if (!advanced) return;
   }
 }
@@ -102,6 +118,20 @@ async function main() {
   const {Firestore, FieldPath, FieldValue} = require('@google-cloud/firestore');
   const db = new Firestore({projectId: 'lucky-lottery-1d174'});
   const today = istDate(Date.now());
+
+  // Read the rate schedule once for the whole run.
+  const config = await db.collection('settings').doc('walletCommissionRates').get();
+  const schedule = config.exists ? config.get('schedule') : [];
+  if (!Array.isArray(schedule) || schedule.some((change, index) =>
+    !change || !/^\d{4}-\d{2}-\d{2}$/.test(change.date) ||
+    !Number.isSafeInteger(change.basisPoints) ||
+    change.basisPoints < 0 || change.basisPoints > 10000 ||
+    (index > 0 && schedule[index - 1].date >= change.date)
+  )) {
+    throw Error('Invalid wallet commission rate schedule');
+  }
+  for (const change of schedule) midnight(change.date);
+
   const wallets = db.collection('walletClients')
     .orderBy(FieldPath.documentId()).select().limit(100);
   let page = await wallets.get();
@@ -110,7 +140,7 @@ async function main() {
   while (!page.empty) {
     for (const wallet of page.docs) {
       try {
-        await settleWallet(db, wallet.ref, startDate, today, FieldValue.serverTimestamp);
+        await settleWallet(db, wallet.ref, startDate, today, FieldValue.serverTimestamp, schedule);
       } catch (error) {
         failed++;
         console.error('Wallet settlement failed for %s: %s', wallet.id, error.message);
@@ -122,7 +152,7 @@ async function main() {
   if (failed) throw Error(failed + ' wallet(s) failed settlement.');
 }
 
-module.exports = {dailyCredit, istDate, midnight, settleWallet};
+module.exports = {rateForDate, dailyCredit, istDate, midnight, settleWallet};
 
 if (require.main === module) {
   main().catch(error => {

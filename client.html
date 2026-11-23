@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: "1:124480241873:web:4b2592767e7186dc3f05f0",
   measurementId: "G-TN1P1PTKJJ"
 };
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);const $=id=>document.getElementById(id);const fmt=n=>Number(n||0).toLocaleString('en-IN');let unsubscribe=null;
+const app=initializeApp(firebaseConfig, 'lucky-lottery-client'),auth=getAuth(app),db=getFirestore(app);const $=id=>document.getElementById(id);const fmt=n=>Number(n||0).toLocaleString('en-IN');let unsubscribe=null;
 function say(t,bad=false){$('status').textContent=t;$('status').className=bad?'error':'ok'}
 function emailForClient(id){return id.toLowerCase()+'@clients.lucky-lottery.invalid'}
 $('loginBtn').onclick=async()=>{try{const id=$('clientId').value.trim().toUpperCase();if(!/^[A-Z0-9_-]{3,32}$/.test(id))throw Error('सही Client ID डालें');const login = await getDoc(doc(db, 'walletLoginIds', id));

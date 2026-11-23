@@ -1,4 +1,4 @@
-<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lucky Lottery | Client Wallet</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;font:16px system-ui;background:radial-gradient(circle at top,#76231b,#210b0b 60%,#110808);color:#fff;min-height:100vh}.wrap{max-width:800px;margin:auto;padding:18px 14px 70px}h1{color:#ffdc55;font-size:27px}h2{font-size:19px;color:#ffe8a0}.card{border:1px solid #85583e;background:#341917;border-radius:18px;padding:18px;margin:14px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{border:1px solid #78503b;border-radius:13px;background:#241110;padding:14px;font-size:13px}.stat b{display:block;font-size:clamp(19px,5vw,29px);color:#ffdb55;margin-top:8px;overflow-wrap:anywhere}label{display:block;margin:12px 0 6px}input{width:100%;padding:13px;background:#1d0e0d;color:white;border:1px solid #9c7360;border-radius:11px;font:inherit}button{border:0;border-radius:11px;background:#ffda55;color:#25100b;font-weight:800;padding:13px 18px;margin-top:14px;cursor:pointer}.hidden{display:none}.muted{color:#e6c6ba;font-size:13px;line-height:1.5}.item{border-bottom:1px solid #69483a;padding:12px 0;font-size:13px;overflow-wrap:anywhere}.error{color:#ffb8b8}.ok{color:#b8ffd0}.home-link{display:inline-flex;align-items:center;min-height:44px;padding:0 13px;border:1px solid #9c7360;border-radius:10px;color:#ffe8a0;font-weight:700;text-decoration:none}.home-link:focus-visible{outline:2px solid #ffda55;outline-offset:2px}</style></head><body><main class="wrap"><nav aria-label="मुख्य नेविगेशन"><a class="home-link" href="./index.html">← होमपेज और रिजल्ट</a></nav><h1>★ LUCKY LOTTERY ★</h1><p class="muted">CLIENT FUN COIN WALLET • केवल मनोरंजन के Virtual Coins</p><section id="login" class="card"><h2>🔐 Client Login</h2><label>Client ID</label><input id="clientId" autocomplete="username" placeholder="जैसे CL001"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="अपना Password"><button id="loginBtn">Login करें</button><p class="muted">Client ID और Password Admin से प्राप्त करें।</p></section><section id="panel" class="hidden"><div class="card"><button id="logoutBtn" style="float:right;margin:0">Logout</button><h2>🪙 मेरा Wallet</h2><p id="who" class="muted"></p><div class="grid"><div class="stat">मूल Coins<b id="principal">—</b></div><div class="stat">Commission Coins<b id="commission">—</b></div><div class="stat">Total Coins<b id="total">—</b></div><div class="stat">रोज अनुमानित Growth<b id="daily">—</b></div></div><p class="muted">6% मासिक Simple Growth केवल मूल Coins पर। रोज की गणना 30 दिन के आधार पर दिखाई गई है। वास्तविक Auto Credit अलग Backend से होगा।</p></div><details class="card"><summary>पासवर्ड बदलें</summary>
+<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lucky Lottery | Client Wallet</title><style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;font:16px system-ui;background:radial-gradient(circle at top,#76231b,#210b0b 60%,#110808);color:#fff;min-height:100vh}.wrap{max-width:800px;margin:auto;padding:18px 14px 70px}h1{color:#ffdc55;font-size:27px}h2{font-size:19px;color:#ffe8a0}.card{border:1px solid #85583e;background:#341917;border-radius:18px;padding:18px;margin:14px 0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{border:1px solid #78503b;border-radius:13px;background:#241110;padding:14px;font-size:13px}.stat b{display:block;font-size:clamp(19px,5vw,29px);color:#ffdb55;margin-top:8px;overflow-wrap:anywhere}label{display:block;margin:12px 0 6px}input{width:100%;padding:13px;background:#1d0e0d;color:white;border:1px solid #9c7360;border-radius:11px;font:inherit}button{border:0;border-radius:11px;background:#ffda55;color:#25100b;font-weight:800;padding:13px 18px;margin-top:14px;cursor:pointer}.hidden{display:none}.muted{color:#e6c6ba;font-size:13px;line-height:1.5}.item{border-bottom:1px solid #69483a;padding:12px 0;font-size:13px;overflow-wrap:anywhere}.error{color:#ffb8b8}.ok{color:#b8ffd0}.home-link{display:inline-flex;align-items:center;min-height:44px;padding:0 13px;border:1px solid #9c7360;border-radius:10px;color:#ffe8a0;font-weight:700;text-decoration:none}.home-link:focus-visible{outline:2px solid #ffda55;outline-offset:2px}</style></head><body><main class="wrap"><nav aria-label="मुख्य नेविगेशन"><a class="home-link" href="./index.html">← होमपेज और रिजल्ट</a></nav><h1>★ LUCKY LOTTERY ★</h1><p class="muted">CLIENT FUN COIN WALLET • केवल मनोरंजन के Virtual Coins</p><section id="login" class="card"><h2>🔐 Client Login</h2><label>Client ID</label><input id="clientId" autocomplete="username" placeholder="जैसे CL001"><label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="अपना Password"><button id="loginBtn" type="button" disabled>Login करें</button><p id="loginStatus" role="status" class="muted">Login सेवा लोड हो रही है…</p><p class="muted">Client ID और Password Admin से प्राप्त करें।</p></section><section id="panel" class="hidden"><div class="card"><button id="logoutBtn" style="float:right;margin:0">Logout</button><h2>🪙 मेरा Wallet</h2><p id="who" class="muted"></p><div class="grid"><div class="stat">मूल Coins<b id="principal">—</b></div><div class="stat">Commission Coins<b id="commission">—</b></div><div class="stat">Total Coins<b id="total">—</b></div><div class="stat">रोज अनुमानित Growth<b id="daily">—</b></div></div><p class="muted">रोज़ का अनुमान आज की मासिक दर और मूल Coins पर आधारित है। वास्तविक क्रेडिट दिन पूरा होने पर गिना जाता है।</p></div><details class="card"><summary>पासवर्ड बदलें</summary>
 <form id="passwordChangeForm">
 <label for="oldClientPassword">मौजूदा पासवर्ड</label>
 <input id="oldClientPassword" type="password" autocomplete="current-password" required>
@@ -8,10 +8,17 @@
 <input id="confirmClientPassword" type="password" autocomplete="new-password" minlength="8" required>
 <button id="changeClientPasswordBtn" type="submit">पासवर्ड सेव करें</button>
 <p id="passwordChangeStatus" role="status"></p>
-</form></details><div class="card"><h2>📜 पूरी Transaction History</h2><div id="history" class="muted">लोड हो रही है…</div></div></section><p id="status" role="status"></p><p class="muted">कोई असली पैसा, नकद निकासी या वास्तविक पुरस्कार नहीं।</p></main><script type="module">
+</form></details><div class="card"><h2>📜 पूरी Transaction History</h2><div id="history" class="muted">लोड हो रही है…</div><button type="button" id="loadOlderClient" class="hidden">पुरानी एंट्री देखें</button></div></section><p id="status" role="status"></p><p class="muted">कोई असली पैसा, नकद निकासी या वास्तविक पुरस्कार नहीं।</p></main><script>
+setTimeout(() => {
+  const button = document.getElementById('loginBtn');
+  if (button.dataset.ready) return;
+  document.getElementById('loginStatus').textContent =
+    'Firebase Login सेवा लोड नहीं हुई। इंटरनेट जाँचकर पेज रिफ्रेश करें।';
+}, 12000);
+</script><script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
 import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,EmailAuthProvider,reauthenticateWithCredential,updatePassword} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
-import {getFirestore,doc,getDoc,collection,getDocs,query,orderBy} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
+import {getFirestore,doc,getDoc,getDocFromServer,collection,getDocs,query,orderBy,limit,startAfter} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
 const firebaseConfig = {
   apiKey: "AIzaSyBrhG_hJeFqtXOro0HI7C9OLdjd2T4ahsY",
   authDomain: "lucky-lottery-1d174.firebaseapp.com",
@@ -24,8 +31,48 @@ const firebaseConfig = {
 const app=initializeApp(firebaseConfig, 'lucky-lottery-client'),auth=getAuth(app),db=getFirestore(app);const $=id=>document.getElementById(id);const fmt=n=>Number(n||0).toLocaleString('en-IN');let unsubscribe=null;
 function say(t,bad=false){$('status').textContent=t;$('status').className=bad?'error':'ok'}
 function emailForClient(id){return id.toLowerCase()+'@clients.lucky-lottery.invalid'}
-$('loginBtn').onclick=async()=>{try{const id=$('clientId').value.trim().toUpperCase();if(!/^[A-Z0-9_-]{3,32}$/.test(id))throw Error('सही Client ID डालें');const login = await getDoc(doc(db, 'walletLoginIds', id));
-await signInWithEmailAndPassword(auth, login.exists() ? login.data().email : emailForClient(id), $('password').value);$('password').value=''}catch(e){say('Login असफल: Client ID / Password जाँचें। '+e.code,true)}};
+const loginButton = $('loginBtn');
+const loginStatus = $('loginStatus');
+
+function loginProgress(message, error = false) {
+  loginStatus.textContent = message;
+  loginStatus.className = error ? 'error' : 'muted';
+}
+
+loginButton.dataset.ready = 'true';
+loginButton.disabled = false;
+loginProgress('');
+loginButton.onclick = async () => {
+  const id = $('clientId').value.trim().toUpperCase();
+  const password = $('password').value;
+  if (!/^[A-Z0-9_-]{3,32}$/.test(id) || !password) {
+    loginProgress('Client ID और Password डालें।', true);
+    return;
+  }
+  loginButton.disabled = true;
+  loginProgress('Client ID जाँची जा रही है…');
+  let lookupTimer;
+  try {
+    const lookup = getDocFromServer(doc(db, 'walletLoginIds', id));
+    const timeout = new Promise((_, reject) => {
+      lookupTimer = setTimeout(() => reject(Error('Firebase ने समय पर जवाब नहीं दिया। फिर कोशिश करें।')), 12000);
+    });
+    const login = await Promise.race([lookup, timeout]);
+    clearTimeout(lookupTimer);
+    loginProgress('Password जाँचा जा रहा है…');
+    await signInWithEmailAndPassword(auth, login.exists() ? login.data().email : emailForClient(id), password);
+    $('password').value = '';
+    loginProgress('');
+  } catch (error) {
+    const invalid = ['auth/invalid-credential', 'auth/wrong-password', 'auth/user-not-found', 'auth/invalid-login-credentials'];
+    loginProgress(invalid.includes(error.code)
+      ? 'Client ID या Password सही नहीं है।'
+      : 'Login नहीं हुआ: ' + (error.code || error.message), true);
+  } finally {
+    clearTimeout(lookupTimer);
+    loginButton.disabled = false;
+  }
+};
 const passwordForm = $('passwordChangeForm');
 passwordForm.onsubmit = async event => {
   event.preventDefault();
@@ -60,5 +107,83 @@ passwordForm.onsubmit = async event => {
   }
 };
 $('logoutBtn').onclick=()=>{passwordForm.reset();$('passwordChangeStatus').textContent='';return signOut(auth)};
-onAuthStateChanged(auth,async u=>{$('login').classList.toggle('hidden',!!u);$('panel').classList.toggle('hidden',!u);if(!u){passwordForm.reset();$('passwordChangeStatus').textContent='';return;}try{const snap=await getDoc(doc(db,'walletClients',u.uid));if(!snap.exists())throw Error('आपका Wallet अभी नहीं बनाया गया');const w=snap.data();if(!w.active)throw Error('Wallet inactive है');$('who').textContent='Client Wallet';$('principal').textContent=fmt(w.principalCoins);$('commission').textContent=fmt(w.commissionCoins);$('total').textContent=fmt(w.principalCoins+w.commissionCoins);$('daily').textContent=fmt(Math.floor(w.principalCoins*6/3000));const hist=await getDocs(query(collection(db,'walletClients',u.uid,'transactions'),orderBy('createdAt','desc')));$('history').replaceChildren();if(hist.empty)$('history').textContent='अभी कोई Transaction नहीं';hist.forEach(d=>{const t=d.data(),div=document.createElement('div');div.className='item';div.textContent=t.type+' • '+fmt(t.amount)+' Coins • '+(t.createdAt?.toDate?.().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})||'Pending');$('history').append(div)});say('Wallet लोड हो गया')}catch(e){await signOut(auth);say(e.message,true)}});
+let historyCursor = null;
+let sessionGeneration = 0;
+
+async function loadClientHistory(user, generation, reset) {
+  const button = $('loadOlderClient');
+  button.disabled = true;
+  try {
+    const clauses = [orderBy('createdAt', 'desc'), limit(25)];
+    if (!reset && historyCursor) clauses.push(startAfter(historyCursor));
+    const entries = await getDocs(query(collection(db, 'walletClients', user.uid, 'transactions'), ...clauses));
+    if (generation !== sessionGeneration) return;
+    if (reset) $('history').replaceChildren();
+    if (reset && entries.empty) $('history').textContent = 'अभी कोई Transaction नहीं';
+    for (const entry of entries.docs) {
+      const t = entry.data();
+      const item = document.createElement('div');
+      item.className = 'item';
+      item.textContent = t.type + ' • ' + fmt(t.amount) + ' Coins • ' +
+        (t.createdAt?.toDate?.().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'}) || 'Pending');
+      $('history').append(item);
+    }
+    historyCursor = entries.docs.at(-1) ?? historyCursor;
+    button.classList.toggle('hidden', entries.size < 25);
+  } finally {
+    if (generation === sessionGeneration) button.disabled = false;
+  }
+}
+
+$('loadOlderClient').onclick = () => {
+  const user = auth.currentUser;
+  if (user && historyCursor) loadClientHistory(user, sessionGeneration, false).catch(error => say(error.message, true));
+};
+
+async function loadDailyEstimate(wallet, generation) {
+  const config = await getDoc(doc(db, 'settings', 'walletCommissionRates'));
+  if (generation !== sessionGeneration) return;
+  const day = new Date(Date.now() + 19800000).toISOString().slice(0,10);
+  const [year, month] = day.split('-').map(Number);
+  const days = new Date(Date.UTC(year, month, 0)).getUTCDate();
+  const schedule = config.data()?.schedule ?? [];
+  const rate = schedule.filter(change => change.date <= day).at(-1)?.basisPoints ?? 600;
+  $('daily').textContent = (wallet.principalCoins * rate / 10000 / days).toLocaleString('en-IN', {maximumFractionDigits: 2});
+}
+
+onAuthStateChanged(auth, async user => {
+  const generation = ++sessionGeneration;
+  historyCursor = null;
+  $('daily').textContent = '—';
+  $('history').textContent = 'लोड हो रही है…';
+  $('loadOlderClient').classList.add('hidden');
+  $('login').classList.toggle('hidden', !!user);
+  $('panel').classList.add('hidden');
+  if (!user) {
+    passwordForm.reset();
+    $('passwordChangeStatus').textContent = '';
+    return;
+  }
+  try {
+    const snap = await getDoc(doc(db, 'walletClients', user.uid));
+    if (generation !== sessionGeneration) return;
+    if (!snap.exists()) throw Error('आपका Wallet अभी नहीं बनाया गया');
+    const wallet = snap.data();
+    if (!wallet.active) throw Error('Wallet inactive है');
+    $('who').textContent = 'Client Wallet';
+    $('principal').textContent = fmt(wallet.principalCoins);
+    $('commission').textContent = fmt(wallet.commissionCoins);
+    $('total').textContent = fmt(wallet.principalCoins + wallet.commissionCoins);
+    $('panel').classList.remove('hidden');
+    say('Wallet लोड हो गया');
+    loadDailyEstimate(wallet, generation).catch(() => {});
+    loadClientHistory(user, generation, true).catch(error => {
+      if (generation === sessionGeneration) $('history').textContent = error.message;
+    });
+  } catch (error) {
+    if (generation !== sessionGeneration) return;
+    await signOut(auth);
+    say(error.message, true);
+  }
+});
 </script></body></html>

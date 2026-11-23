@@ -35,7 +35,25 @@ function number(n){return Number(n||0).toLocaleString('en-IN')}
 onAuthStateChanged(auth,u=>{$('login').classList.toggle('hidden',!!u&&u.uid===ADMIN_UID);$('panel').classList.toggle('hidden',!u||u.uid!==ADMIN_UID);if(u&&u.uid===ADMIN_UID){status('Admin login सफल');refresh().catch(e=>status(e.message,true))}else if(u){status('इस खाते को Admin अनुमति नहीं है',true);signOut(auth)}});
 $('loginBtn').onclick=async()=>{try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);$('password').value=''}catch(e){status(e.message,true)}};
 $('logoutBtn').onclick=()=>signOut(auth);
-async function refresh(){requireAdmin();const snap=await getDocs(collection(db,'walletClients'));const sel=$('clients');const old=selected;sel.replaceChildren(new Option('Client चुनें',''));snap.forEach(d=>sel.add(new Option(d.id,d.id)));if(old&&snap.docs.some(d=>d.id===old))sel.value=old;status(snap.size+' Wallet मिले');if(sel.value)await loadWallet()}
+async function refresh() {
+  requireAdmin();
+  const wallets = await getDocs(collection(db, 'walletClients'));
+  const clientIds = new Map();
+  let listWarning = '';
+  try {
+    const logins = await getDocs(collection(db, 'walletLoginIds'));
+    logins.forEach(login => clientIds.set(login.data().uid, login.id));
+  } catch (error) {
+    listWarning = ' • Client IDs नहीं पढ़ सके: ' + (error.code || error.message);
+  }
+  const dropdown = $('clients');
+  dropdown.replaceChildren(new Option('Client चुनें', ''));
+  wallets.forEach(wallet => dropdown.add(new Option(clientIds.get(wallet.id) || wallet.id, wallet.id)));
+  selected = wallets.docs.some(wallet => wallet.id === selected) ? selected : '';
+  dropdown.value = selected;
+  await loadWallet();
+  status(wallets.size + ' Wallet मिले' + listWarning, !!listWarning);
+}
 $('refreshBtn').onclick=()=>refresh().catch(e=>status(e.message,true));
 $('createBtn').onclick=async()=>{if(busy)return;const uid=$('newUid').value.trim();if(!/^[A-Za-z0-9]{20,128}$/.test(uid)){status('सही Firebase Auth UID डालें',true);return}setBusy(true);try{requireAdmin();const ref=doc(db,'walletClients',uid);if((await getDoc(ref)).exists())throw Error('इस UID का Wallet पहले से है');await setDoc(ref,{principalCoins:0,commissionCoins:0,active:true,lastTransactionId:''});$('newUid').value='';status('Zero Balance Wallet बनाया गया');await refresh()}catch(e){status(e.message,true)}finally{setBusy(false)}};
 $('provisionBtn').onclick = async () => {
@@ -68,7 +86,13 @@ $('provisionBtn').onclick = async () => {
     createdUser = undefined;
     $('createClientId').value = '';
     $('createClientPassword').value = '';
-    status('Client ' + id + ' और उसका Zero Balance Wallet बन गया');
+    selected = uid;
+    try {
+      await refresh();
+      status('Client ' + id + ' और उसका Zero Balance Wallet बन गया');
+    } catch {
+      status('Client ' + id + ' बन गया। Wallet List Refresh करके देखो।');
+    }
   } catch (error) {
     if (createdUser) {
       // Only remove the Auth account when the server confirms the wallet commit did not happen.

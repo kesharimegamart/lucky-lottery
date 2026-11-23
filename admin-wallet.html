@@ -4,14 +4,17 @@
 </style></head><body><main class="wrap"><header class="brand"><div><h1>★ LUCKY LOTTERY ★</h1><p>Admin Wallet • Fun Coins Management</p></div><span class="pill">🔒 Admin Only</span></header>
 <section class="card" id="login"><div class="step">सुरक्षित लॉगिन</div><h2>🔐 Admin Login</h2><label for="email">Admin Email</label><input autocomplete="username" id="email" placeholder="Email डालें" type="email"/><label for="password">Password</label><input autocomplete="current-password" id="password" placeholder="Password डालें" type="password"/><div style="margin-top:17px"><button id="loginBtn" style="width:100%">Login करें</button></div></section>
 <section class="hidden" id="panel"><div class="card"><div class="row"><div><div class="step">WALLET CONTROL CENTER</div><h2 style="margin-bottom:4px">👋 Admin Dashboard</h2><p class="muted" style="margin:0">मूल और Commission Coins का अलग-अलग हिसाब</p></div><button class="secondary" id="logoutBtn">Logout</button></div></div>
-<div class="layout"><section class="card"><div class="step">STEP 1</div><h2>👤 नया Client Wallet</h2><p class="muted">अभी केवल Firebase Authentication में बने Client का UID इस्तेमाल होगा। नई Client ID और Password बनाने की सुविधा अगले चरण में आएगी।</p><label for="newUid">Client Firebase UID</label><input autocomplete="off" id="newUid" placeholder="Firebase Authentication UID"/><button id="createBtn" style="width:100%;margin-top:13px">+ Zero Balance Wallet बनाएँ</button></section>
+<div class="layout"><section class="card"><div class="step">STEP 1</div><h2>👤 नया Client Wallet</h2><label for="createClientId">Client ID</label><input id="createClientId" autocomplete="off" maxlength="32" placeholder="जैसे CL001"/>
+<label for="createClientPassword">Client Password</label><input id="createClientPassword" type="password" autocomplete="new-password" minlength="8"/>
+<button id="provisionBtn" style="width:100%;margin-top:13px">Client Login और Wallet बनाएँ</button>
+<p class="muted">पहले से बने Firebase खाते के लिए नीचे उसका UID डालें।</p><label for="newUid">Client Firebase UID</label><input autocomplete="off" id="newUid" placeholder="Firebase Authentication UID"/><button id="createBtn" style="width:100%;margin-top:13px">+ Zero Balance Wallet बनाएँ</button></section>
 <section class="card"><div class="step">STEP 2</div><h2>👥 Client चुनें</h2><p class="muted">किस Client का Wallet देखना या बदलना है?</p><label for="clients">Client Wallet</label><select id="clients"><option value="">Client चुनें</option></select><button class="secondary" id="refreshBtn" style="margin-top:12px">↻ Wallet List Refresh</button></section>
 <section class="card full"><div class="step">WALLET OVERVIEW</div><h2>🪙 Client Balance</h2><div id="balances"><div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div><div class="stat">Total Coins<strong>—</strong></div><div class="stat">Daily Growth<strong>—</strong><small>केवल अनुमान</small></div></div></section>
 <section class="card"><div class="step">STEP 3</div><h2>➕ Coins जोड़ें / निकालें</h2><label for="action">क्या करना है?</label><select id="action"><option value="principal_add">मूल Coins जोड़ें (+)</option><option value="principal_deduct">मूल Coins निकालें (−)</option><option value="commission_add">Commission Coins जोड़ें (+)</option><option value="commission_deduct">Commission Coins निकालें (−)</option></select><label for="amount">कितने Coins?</label><input id="amount" inputmode="numeric" min="1" placeholder="जैसे 1000" step="1" type="number"/><button id="saveBtn" style="width:100%;margin-top:15px">✓ Coins और History सेव करें</button><p class="hint">सेव करने से पहले Confirmation मिलेगा। Wallet और History साथ में अपडेट होंगे।</p></section>
 <section class="card"><div class="step">RECENT ACTIVITY</div><h2>📜 Transaction History</h2><p class="muted">चुने गए Client की सभी एंट्री</p><div class="muted" id="history">पहले Client चुनें</div></section></div></section>
 <p aria-live="polite" class="muted" id="status" role="status"></p><p class="foot">केवल Virtual Fun Coins • कोई वास्तविक पैसा, जमा या नकद निकासी नहीं</p></main><script type="module">
-import {initializeApp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
-import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
+import {initializeApp,deleteApp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-app.js';
+import {getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,createUserWithEmailAndPassword,deleteUser,initializeAuth,inMemoryPersistence} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-auth.js';
 import {getFirestore,collection,doc,getDoc,getDocs,query,orderBy,limit,runTransaction,setDoc,serverTimestamp} from 'https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js';
 const firebaseConfig = {
   apiKey: "AIzaSyBrhG_hJeFqtXOro0HI7C9OLdjd2T4ahsY",
@@ -27,7 +30,7 @@ const app=initializeApp(firebaseConfig);const auth=getAuth(app),db=getFirestore(
 function status(msg,error=false){$('status').textContent=msg;$('status').className=error?'error':'ok'}
 function admin(){return auth.currentUser?.uid===ADMIN_UID}
 function requireAdmin(){if(!admin())throw Error('Admin access required')}
-function setBusy(v){busy=v;for(const id of ['saveBtn','createBtn','refreshBtn'])$(id).disabled=v}
+function setBusy(v){busy=v;for(const id of ['saveBtn','createBtn','refreshBtn','provisionBtn'])$(id).disabled=v}
 function number(n){return Number(n||0).toLocaleString('en-IN')}
 onAuthStateChanged(auth,u=>{$('login').classList.toggle('hidden',!!u&&u.uid===ADMIN_UID);$('panel').classList.toggle('hidden',!u||u.uid!==ADMIN_UID);if(u&&u.uid===ADMIN_UID){status('Admin login सफल');refresh().catch(e=>status(e.message,true))}else if(u){status('इस खाते को Admin अनुमति नहीं है',true);signOut(auth)}});
 $('loginBtn').onclick=async()=>{try{await signInWithEmailAndPassword(auth,$('email').value.trim(),$('password').value);$('password').value=''}catch(e){status(e.message,true)}};
@@ -35,6 +38,58 @@ $('logoutBtn').onclick=()=>signOut(auth);
 async function refresh(){requireAdmin();const snap=await getDocs(collection(db,'walletClients'));const sel=$('clients');const old=selected;sel.replaceChildren(new Option('Client चुनें',''));snap.forEach(d=>sel.add(new Option(d.id,d.id)));if(old&&snap.docs.some(d=>d.id===old))sel.value=old;status(snap.size+' Wallet मिले');if(sel.value)await loadWallet()}
 $('refreshBtn').onclick=()=>refresh().catch(e=>status(e.message,true));
 $('createBtn').onclick=async()=>{if(busy)return;const uid=$('newUid').value.trim();if(!/^[A-Za-z0-9]{20,128}$/.test(uid)){status('सही Firebase Auth UID डालें',true);return}setBusy(true);try{requireAdmin();const ref=doc(db,'walletClients',uid);if((await getDoc(ref)).exists())throw Error('इस UID का Wallet पहले से है');await setDoc(ref,{principalCoins:0,commissionCoins:0,active:true,lastTransactionId:''});$('newUid').value='';status('Zero Balance Wallet बनाया गया');await refresh()}catch(e){status(e.message,true)}finally{setBusy(false)}};
+$('provisionBtn').onclick = async () => {
+  if (busy) return;
+  const id = $('createClientId').value.trim().toUpperCase();
+  const password = $('createClientPassword').value;
+  if (!/^[A-Z0-9_-]{3,32}$/.test(id) || password.length < 8) {
+    status('सही Client ID और कम से कम 8 अक्षरों का Password डालें', true);
+    return;
+  }
+  setBusy(true);
+  let provisioningApp, createdUser;
+  try {
+    requireAdmin();
+    const loginRef = doc(db, 'walletLoginIds', id);
+    if ((await getDoc(loginRef)).exists()) throw Error('यह Client ID पहले से मौजूद है');
+    const token = crypto.randomUUID().replaceAll('-', '');
+    const email = token + '@clients.lucky-lottery.invalid';
+    provisioningApp = initializeApp(firebaseConfig, 'provision-' + token);
+    const temporaryAuth = initializeAuth(provisioningApp, {persistence: inMemoryPersistence});
+    createdUser = (await createUserWithEmailAndPassword(temporaryAuth, email, password)).user;
+    const uid = createdUser.uid;
+    await runTransaction(db, async tx => {
+      if ((await tx.get(loginRef)).exists()) throw Error('यह Client ID पहले से मौजूद है');
+      tx.set(doc(db, 'walletClients', uid), {
+        principalCoins: 0, commissionCoins: 0, active: true, lastTransactionId: ''
+      });
+      tx.set(loginRef, {email, uid});
+    });
+    createdUser = undefined;
+    $('createClientId').value = '';
+    $('createClientPassword').value = '';
+    status('Client ' + id + ' और उसका Zero Balance Wallet बन गया');
+  } catch (error) {
+    if (createdUser) {
+      // Only remove the Auth account when the server confirms the wallet commit did not happen.
+      try {
+        const {getDocFromServer} = await import('https://www.gstatic.com/firebasejs/13.2.0/firebase-firestore.js');
+        const wallet = await getDocFromServer(doc(db, 'walletClients', createdUser.uid));
+        if (!wallet.exists()) await deleteUser(createdUser);
+      } catch {
+        status('Client बनाने की पुष्टि नहीं हुई। दोबारा कोशिश से पहले Wallet List जाँचें।', true);
+        return;
+      }
+    }
+    status(error.message, true);
+  } finally {
+    try {
+      if (provisioningApp) await deleteApp(provisioningApp);
+    } finally {
+      setBusy(false);
+    }
+  }
+};
 $('clients').onchange=()=>{selected=$('clients').value;loadWallet().catch(e=>status(e.message,true))};
 async function loadWallet(){requireAdmin();if(!selected){$('balances').innerHTML='<div class="stat">मूल Coins<strong>—</strong></div><div class="stat">Commission Coins<strong>—</strong></div>'; $('history').textContent='Client चुनें';return}const snap=await getDoc(doc(db,'walletClients',selected));if(!snap.exists())throw Error('Wallet नहीं मिला');const w=snap.data();$('balances').innerHTML='<div class="stat">मूल Coins<strong>'+number(w.principalCoins)+'</strong></div><div class="stat">Commission Coins<strong>'+number(w.commissionCoins)+'</strong></div><div class="stat">Total Coins<strong>'+number(w.principalCoins+w.commissionCoins)+'</strong></div><div class="stat">Daily Simple Growth (30-day basis)<strong>'+number(w.principalCoins*0.06/30)+'</strong><small>केवल अनुमान, Auto Credit नहीं</small></div>';
 const tx=await getDocs(query(collection(db,'walletClients',selected,'transactions'),orderBy('createdAt','desc')));const h=$('history');h.replaceChildren();if(tx.empty){h.textContent='अभी कोई Transaction नहीं';return}tx.forEach(d=>{const t=d.data();const el=document.createElement('div');el.className='item';el.textContent=t.type+' • '+number(t.amount)+' Coins • '+(t.createdAt?.toDate?.().toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})||'Pending');h.append(el)})}

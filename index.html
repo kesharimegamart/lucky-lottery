@@ -297,7 +297,7 @@ main.wrap{position:relative;z-index:1}
 .result-format dd{margin:3px 0 0;color:#fff7dc;font-size:clamp(22px,7vw,36px);line-height:1.2;font-weight:900;font-variant-numeric:tabular-nums}
 
 .market-quotes-panel{border:1px solid #e9bc5a;border-radius:12px;background:#1c1213;color:#fff8e5;padding:5px 7px;margin:0 0 10px}
-.market-quotes-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+.market-quotes-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,2.6fr) minmax(0,1fr);gap:4px}
 .market-quote-link,.market-quote-sensex{min-width:0;border:1px solid #745944;border-radius:8px;background:#2c1816;color:#ffe7af;text-align:center;overflow:hidden}
 .market-quote-link{display:flex;flex-direction:column;gap:3px;justify-content:center;padding:6px 2px;text-decoration:none;font-size:clamp(11px,3vw,14px)}
 .market-quote-link small,.sensex-data-label{font-size:10px;color:#efd5b3}
@@ -305,6 +305,14 @@ main.wrap{position:relative;z-index:1}
 .market-quotes-grid a:focus-visible{outline:2px solid #ffe7af;outline-offset:-2px}
 .market-quote-sensex .tradingview-widget-copyright{font-size:9px;line-height:1.2;padding:2px}
 .market-quote-sensex .tradingview-widget-copyright a{color:#ffe7af}
+.market-quote-sensex iframe{display:block;width:100%;max-width:100%;border:0}
+@media(max-width:380px){
+  .market-quotes-panel{padding-inline:4px}
+  .market-quotes-grid{gap:3px;grid-template-columns:minmax(0,1fr) minmax(192px,3fr) minmax(0,1fr)}
+  .market-quote-link{font-size:10px}
+  .market-quote-link small{font-size:9px}
+}
+
 </style></head>
 <body><div class="lucky-bg-balls" aria-hidden="true"><span class="lucky-bg-ball" style="--x:5%;--y:13%;--size:66px;--light:#ff9cc6;--dark:#b80f50;--dur:7.4s;--delay:-2s">4</span><span class="lucky-bg-ball" style="--x:79%;--y:19%;--size:58px;--light:#9cddff;--dark:#1354b4;--dur:8.7s;--delay:-5s">7</span><span class="lucky-bg-ball" style="--x:12%;--y:38%;--size:53px;--light:#f8e588;--dark:#d87b09;--dur:9.2s;--delay:-3s">2</span><span class="lucky-bg-ball" style="--x:83%;--y:47%;--size:70px;--light:#b9f4ab;--dark:#267d36;--dur:7.8s;--delay:-6s">9</span><span class="lucky-bg-ball" style="--x:4%;--y:66%;--size:60px;--light:#d5aaff;--dark:#7137ba;--dur:10s;--delay:-4s">5</span><span class="lucky-bg-ball" style="--x:77%;--y:78%;--size:56px;--light:#ffb5a5;--dark:#d23824;--dur:8.1s;--delay:-1s">1</span><span class="lucky-bg-ball" style="--x:32%;--y:90%;--size:48px;--light:#a5f5f0;--dark:#087e86;--dur:9.6s;--delay:-7s">8</span><span class="lucky-bg-ball" style="--x:63%;--y:7%;--size:43px;--light:#ffe1a6;--dark:#a86b0a;--dur:10.4s;--delay:-3s">3</span></div><header><div class="header-line"><button type="button" class="header-control" id="headerMenu" aria-label="मेनू खोलें" aria-expanded="false">☰</button><div class="brand">Lucky Lottery</div><button type="button" class="header-control" id="headerBell" aria-label="रिजल्ट बेल चालू या बंद करें">🔕</button></div><div class="header-sub">✦ TRIPLE DIGIT RESULTS ✦</div><div class="header-bottom"><span class="date-chip" id="headerDate">आज के परिणाम</span><a class="whatsapp-share" href="https://wa.me/?text=https%3A%2F%2Fgoluckylottery.com%2F" target="_blank" rel="noopener noreferrer">🟢 WhatsApp पर शेयर करें</a></div><div class="client-login-row"></div><div class="header-menu-panel" id="headerMenuPanel"><a href="#today-results">आज का रिजल्ट</a><a href="#slots">सभी रिजल्ट</a><a href="#history-section">पिछले 30 दिन</a><a href="#next-result">अगला रिजल्ट</a></div></header>
 <main class="wrap">
